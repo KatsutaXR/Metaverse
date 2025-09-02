@@ -51,6 +51,15 @@ public class WorldUIPresenter : IDisposable
             })
             .AddTo(_disposable);
 
+        _worldUIView
+            .CreateSessionRequested
+            .Subscribe(customSessionInfo =>_networkController.CreateSessionAsync(_worldUIModel.PrepareCreateSessionInfo(customSessionInfo)))
+            .AddTo(_disposable);
+
+        _worldUIView
+            .JoinSessionRequested
+            .Subscribe(customSessionInfo => _networkController.JoinSessionAsync(_worldUIModel.PrepareJoinSessionInfo(customSessionInfo)))
+            .AddTo(_disposable);
 
         // 以下Mediator経由のイベント
 

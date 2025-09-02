@@ -8,7 +8,7 @@ using VContainer;
 public class ClientUIPresenter : IDisposable
 {
     // [Inject]で依存注入
-    private SceneController _sceneController;
+    private NetworkController _networkController;
 
     // Initializeで参照取得
     private ClientUIView _clientUIView;
@@ -24,10 +24,10 @@ public class ClientUIPresenter : IDisposable
     private CompositeDisposable _disposable;
 
     [Inject]
-    public ClientUIPresenter(ClientUIModel clientUIModel, SceneController sceneController)
+    public ClientUIPresenter(ClientUIModel clientUIModel, NetworkController networkController)
     {
         _clientUIModel = clientUIModel;
-        _sceneController = sceneController;
+        _networkController = networkController;
     }
 
     public void Initialize(ClientUIView clientUIView, AvatarData avatarData)
@@ -41,7 +41,7 @@ public class ClientUIPresenter : IDisposable
         // ロビーに戻るボタン押下時
         _clientUIView
             .LobbyButtonClicked
-            .Subscribe(_ => _sceneController.LoadLobbyAsync().Forget())
+            .Subscribe(_ => _networkController.JoinLobbyAsync().Forget())
             .AddTo(_disposable);
 
 

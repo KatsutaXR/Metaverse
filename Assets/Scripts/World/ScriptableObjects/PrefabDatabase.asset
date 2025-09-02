@@ -18,3 +18,4 @@ MonoBehaviour:
   _clientUIPrefab: {fileID: 2668970450738262420, guid: 1f0619516b37c8442a17054b4874e578, type: 3}
   _worldListItemPrefab: {fileID: 590638277997991642, guid: 8ada8d4a607369643890ba05eff7148d, type: 3}
   _sessionItemPrefab: {fileID: 3803831517798125664, guid: 4858006b77c294748bd635f4717ee800, type: 3}
+  _networkRunnerPrefab: {fileID: 7631106225755331107, guid: 13191161ac1d8394cad151b1205fec97, type: 3}

@@ -43,6 +43,8 @@ public class WorldUIView : MonoBehaviour
     [SerializeField] TextMeshProUGUI _joinSessionPassword;
     [SerializeField] Button _joinSessionOKButton;
     [SerializeField] Button _joinSessionCancelButton;
+    private readonly Subject<CustomSessionInfo> _joinSessionRequested = new Subject<CustomSessionInfo>();
+    public IObservable<CustomSessionInfo> JoinSessionRequested => _joinSessionRequested;
 
     private WorldData[] _worldDatas;
     private List<GameObject> _sessionItems;
@@ -65,9 +67,30 @@ public class WorldUIView : MonoBehaviour
             .Subscribe(_ => BackToMainMenu())
             .AddTo(_disposable);
 
+        _createSessionOKButton
+            .OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                CustomSessionInfo customSessionInfo = new CustomSessionInfo();
+                customSessionInfo.SessionName = _createSessionName.text;
+                customSessionInfo.Password = _createSessionPassword.text;
+                _createSessionRequested.OnNext(customSessionInfo);
+            })
+            .AddTo(_disposable);
+
         _createSessionCancelButton
             .OnClickAsObservable()
             .Subscribe(_ => BackToWorldDetail())
+            .AddTo(_disposable);
+
+        _joinSessionOKButton
+            .OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                CustomSessionInfo customSessionInfo = new CustomSessionInfo();
+                customSessionInfo.Password = _joinSessionPassword.text;
+                _joinSessionRequested.OnNext(customSessionInfo);
+            })
             .AddTo(_disposable);
 
         _joinSessionCancelButton
@@ -95,8 +118,7 @@ public class WorldUIView : MonoBehaviour
 
     private void OnWorldListItemClicked(WorldData worldData)
     {
-        _worldList.SetActive(false);
-        _worldDetail.SetActive(true);
+        GoToWorldDetail();
 
         _worldDetailWorldName.text = worldData.WorldName;
         _worldDetailWorldImage.sprite = worldData.WorldImage;
@@ -129,7 +151,9 @@ public class WorldUIView : MonoBehaviour
 
     private void OnSessionItemClicked(SessionInfo sessionInfo)
     {
+        Debug.Log($"Name = {sessionInfo.Name}, WorldID = {sessionInfo.Properties["WorldID"]}, Password = {sessionInfo.Properties["Password"]}");
         _sessionItemClicked.OnNext(sessionInfo);
+        _joinSessionButton.interactable = true;
     }
 
     private void GoToJoinSessionSetting()
@@ -148,6 +172,14 @@ public class WorldUIView : MonoBehaviour
     {
         _worldUI.SetActive(true);
         _worldList.SetActive(true);
+    }
+
+    private void GoToWorldDetail()
+    {
+        _worldList.SetActive(false);
+        _worldDetail.SetActive(true);
+
+        _joinSessionButton.interactable = false;
     }
 
     private void BackToMainMenu()
@@ -170,6 +202,8 @@ public class WorldUIView : MonoBehaviour
         _createSessionSetting.SetActive(false);
         _joinSessionSetting.SetActive(false);
         _worldDetail.SetActive(true);
+
+        _joinSessionButton.interactable = false;
 
         _updateSessionItemsRequested.OnNext(Unit.Default);
     }

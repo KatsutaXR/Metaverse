@@ -9,11 +9,13 @@ using VContainer.Unity;
 /// </summary>
 public class GameLauncher : IStartable
 {
+    private readonly NetworkRunnerController _networkRunnerController;
     private readonly NetworkController _networkController;
     private readonly SceneController _sceneController;
     [Inject]
-    public GameLauncher(NetworkController networkController, SceneController sceneController)
+    public GameLauncher(NetworkRunnerController networkRunnerController, NetworkController networkController, SceneController sceneController)
     {
+        _networkRunnerController = networkRunnerController;
         _networkController = networkController;
         _sceneController = sceneController;
     }
@@ -22,10 +24,12 @@ public class GameLauncher : IStartable
     public void Start()
     {
         // 初期化処理
-        _networkController.Initialize();
+        _networkRunnerController.Initialize();
+        _networkController.Initialize(); // todo:networkRunnercontrollerに対応させる
 
         // テスト
-        _sceneController.LoadWorldAsync(WorldID.TestWorld).Forget();
+        _networkController.JoinLobbyAsync().Forget();
+        //_sceneController.LoadWorldAsync(WorldID.TestWorld).Forget();
         //_sceneController.LoadLobbyAsync().Forget();
     }
 }
