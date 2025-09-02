@@ -1,0 +1,27 @@
+using VContainer;
+using VContainer.Unity;
+
+public class LobbyLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        builder.RegisterEntryPoint<LobbyInitializer>(Lifetime.Scoped);
+        builder.RegisterEntryPoint<LobbyMediator>(Lifetime.Scoped);
+        builder.Register<LobbyObjectFactory>(Lifetime.Scoped);
+
+        // ClientUI
+        builder.Register<ClientUIPresenter>(Lifetime.Scoped);
+        builder.Register<ClientUIModel>(Lifetime.Scoped);
+        builder.Register<IClientUIModelUseCase, LobbyClientUIModelUseCase>(Lifetime.Scoped);
+
+        // WorldUI
+        builder.Register<WorldUIPresenter>(Lifetime.Scoped);
+        builder.Register<WorldUIModel>(Lifetime.Scoped);
+
+        // Player
+        builder.Register<PlayerModel>(Lifetime.Scoped);
+        builder.Register<PlayerPresenter>(Lifetime.Scoped);
+        builder.Register<PlayerData>(Lifetime.Scoped);
+
+    }
+}
