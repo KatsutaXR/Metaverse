@@ -6,7 +6,7 @@ public class StrokeController : NetworkBehaviour
     private LineRenderer _lineRenderer;
     [Networked] public string PenTag { get; set; }
 
-    [Networked, Capacity(1024)] 
+    [Networked, Capacity(1024)]
     private NetworkLinkedList<Vector3> Points { get; }
 
     private void Awake()
@@ -34,6 +34,13 @@ public class StrokeController : NetworkBehaviour
             Points.Add(point);
             _lineRenderer.positionCount = Points.Count;
             _lineRenderer.SetPosition(Points.Count - 1, point);
+            SetStrokePosition(Points.Count - 1, point); // 同期
         }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void SetStrokePosition(int count, Vector3 point)
+    {
+        _lineRenderer.SetPosition(count, point);
     }
 }
