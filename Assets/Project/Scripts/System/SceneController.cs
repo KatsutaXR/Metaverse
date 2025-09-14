@@ -3,17 +3,20 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
+using Fusion;
 
 /// <summary>
 /// プロジェクト全体のシーンを制御するクラス
 /// </summary>
 public class SceneController
 {
+    private readonly NetworkRunnerController _networkRunnerController;
     private readonly WorldDatabase _worldDatabase;
 
     [Inject]
-    public SceneController(WorldDatabase worldDatabase)
+    public SceneController(NetworkRunnerController networkRunnerController, WorldDatabase worldDatabase)
     {
+        _networkRunnerController = networkRunnerController;
         _worldDatabase = worldDatabase;
     }
 
@@ -32,9 +35,7 @@ public class SceneController
             return;
         }
 
-        // Worldシーンのロード
-        await SceneManager.LoadSceneAsync(worldData.WorldName, LoadSceneMode.Additive);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldData.WorldName));
+        await _networkRunnerController.Runner.LoadScene(worldData.WorldName, LoadSceneMode.Additive);
     }
 
     public async UniTask UnloadWorldAsync(WorldID worldID)

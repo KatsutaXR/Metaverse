@@ -50,7 +50,7 @@ public class LobbyInitializer : IStartable
 
         // todo:最初はSetActive = falseにする
         GameObject clientUI = _lobbyObjectFactory.CreateClientUI();
-        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), player.GetComponentInChildren<AvatarData>(true));
+        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), player.GetComponentInChildren<PlayerReferences>(true));
         WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
         worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
         _worldUIPresenter.Initialize(clientUI.GetComponentInChildren<WorldUIView>(true));

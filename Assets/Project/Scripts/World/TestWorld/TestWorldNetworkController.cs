@@ -1,6 +1,7 @@
 using System.Linq;
 using Fusion;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 public class TestWorldNetworkController : WorldNetworkController
@@ -22,47 +23,42 @@ public class TestWorldNetworkController : WorldNetworkController
     public override void Initialize()
     {
         _runner.AddCallbacks(this);
-    }
 
-    // 各クライアント参加時の処理を行う
-    public override void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        Debug.Log("Joined TestWorld");
+        Debug.Log($"active = {SceneManager.GetActiveScene().name}");
 
-        // シーン上のネットワークオブジェクトをマスタークライアントが最初にスポーンする
-        if (runner.IsSharedModeMasterClient)
+
+        GameObject playerObject = _testWorldObjectFactory.CreatePlayer(_runner, _runner.LocalPlayer);
+        _playerData.Player = playerObject;
+        var playerReferences = playerObject.GetComponentInChildren<PlayerReferences>(true);
+
+        // 鏡の設定
+        GameObject[] mirrorObjects = GameObject.FindGameObjectsWithTag("Mirror");
+        if (mirrorObjects.Length != 0)
         {
-            var sceneObjects = GameObject.FindObjectsByType<NetworkObject>(FindObjectsSortMode.None);
-            foreach (var obj in sceneObjects)
+            foreach (var mirror in mirrorObjects)
             {
-                runner.Spawn(obj, obj.transform.position, obj.transform.rotation);
+                mirror.GetComponent<MirrorView>().PlayerCamera = playerReferences.Camera;
             }
         }
 
-        if (player == runner.LocalPlayer)
+        // ペンの設定
+        PenController[] penControllers = GameObject.FindObjectsByType<PenController>(FindObjectsSortMode.None);
+        if (penControllers.Length != 0)
+        {
+            foreach (var penController in penControllers)
             {
-                GameObject playerObject = _testWorldObjectFactory.CreatePlayer(runner, player);
-                _playerData.Player = playerObject;
-                GameObject[] mirrorObjects = GameObject.FindGameObjectsWithTag("Mirror");
-                if (mirrorObjects.Length != 0)
-                {
-                    Transform playerCamera = GameObject.FindWithTag("MainCamera").transform;
-                    foreach (var mirror in mirrorObjects)
-                    {
-                        mirror.GetComponent<MirrorView>().PlayerCamera = playerCamera;
-                    }
-                }
-
-                // todo:最初はSetActive = falseにする
-                GameObject clientUI = _testWorldObjectFactory.CreateClientUI();
-                _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerObject.GetComponentInChildren<AvatarData>(true));
-                WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
-                worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
-                _worldUIPresenter.Initialize(clientUI.GetComponentInChildren<WorldUIView>(true));
-
-                _playerPresenter.Initialize(playerObject.GetComponentInChildren<PlayerView>(true));
+                penController.Initialize(playerReferences.RightNearFarInteractor);
             }
+        }
 
+        // todo:最初はSetActive = falseにする
+        GameObject clientUI = _testWorldObjectFactory.CreateClientUI();
+        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
+        WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
+        worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
+        _worldUIPresenter.Initialize(clientUI.GetComponentInChildren<WorldUIView>(true));
+
+        _playerPresenter.Initialize(playerObject.GetComponentInChildren<PlayerView>(true));
     }
 
     public override void Dispose()

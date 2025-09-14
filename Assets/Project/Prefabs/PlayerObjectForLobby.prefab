@@ -1819,11 +1819,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c48104f8f8fbeb429065ff6940dc07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _origin: {fileID: 0}
-  _head: {fileID: 0}
-  _body: {fileID: 0}
+  _origin: {fileID: 789362766298146308}
+  _camera: {fileID: 97526692418056090}
   _rightHand: {fileID: 2168334293516127331}
   _leftHand: {fileID: 2503566683281879042}
+  _rightNearFarInteractor: {fileID: 5715424060802015204}
 --- !u!114 &6178622110647847142
 MonoBehaviour:
   m_ObjectHideFlags: 0

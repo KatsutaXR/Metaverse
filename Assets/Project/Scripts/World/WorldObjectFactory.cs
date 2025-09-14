@@ -12,7 +12,7 @@ public abstract class WorldObjectFactory
         GameObject player = Object.Instantiate(_prefabDatabase.PlayerPrefabForWorld, SpawnPlayerPosition, SpawnPlayerRotation);
 
         NetworkObject syncedAvatar = runner.Spawn(_prefabDatabase.SyncedPlayerPrefab, SpawnPlayerPosition, SpawnPlayerRotation, playerRef);
-        syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(player.GetComponentInChildren<AvatarData>(true));
+        syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(player.GetComponentInChildren<PlayerReferences>(true));
 
         return player;
     }

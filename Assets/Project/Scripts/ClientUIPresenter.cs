@@ -13,7 +13,7 @@ public class ClientUIPresenter : IDisposable
     // Initializeで参照取得
     private ClientUIView _clientUIView;
     private ClientUIModel _clientUIModel;
-    private AvatarData _avatarData;
+    private PlayerReferences _playerReferences;
     // Mediator経由のイベント
     private readonly Subject<Vector3> _respawnButtonClicked = new Subject<Vector3>();
     public IObservable<Vector3> RespawnButtonClicked => _respawnButtonClicked;
@@ -30,10 +30,10 @@ public class ClientUIPresenter : IDisposable
         _networkController = networkController;
     }
 
-    public void Initialize(ClientUIView clientUIView, AvatarData avatarData)
+    public void Initialize(ClientUIView clientUIView, PlayerReferences playerReferences)
     {
         _clientUIView = clientUIView;
-        _avatarData = avatarData;
+        _playerReferences = playerReferences;
         _disposable = new CompositeDisposable();
 
         // todo:UIの位置をクライアントに合わせる

@@ -113,13 +113,13 @@ public class SyncedPlayerAvatar : NetworkBehaviour
         }
     }
 
-    public void Initialize(AvatarData avatarData)
+    public void Initialize(PlayerReferences playerReferences)
     {
         // todo:ロジックの最適化
-        _targetOriginTransform = avatarData.Origin;
-        _targetHeadTransform = avatarData.Head;
-        _targetRightHandTransform = avatarData.RightHand;
-        _targetLeftHandTransform = avatarData.LeftHand;
+        _targetOriginTransform = playerReferences.Origin;
+        _targetHeadTransform = playerReferences.Camera;
+        _targetRightHandTransform = playerReferences.RightHand;
+        _targetLeftHandTransform = playerReferences.LeftHand;
 
         // ローカルでは腕だけ見えるようにする
         foreach (Transform child in GetComponentsInChildren<Transform>(true))

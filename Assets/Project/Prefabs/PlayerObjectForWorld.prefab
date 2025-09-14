@@ -539,10 +539,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _origin: {fileID: 8503914239416701495}
-  _head: {fileID: 8071317267680927212}
-  _body: {fileID: 0}
+  _camera: {fileID: 8071317267680927212}
   _rightHand: {fileID: 5788752445231501021}
   _leftHand: {fileID: 174971697020474424}
+  _rightNearFarInteractor: {fileID: 8623399612159230787}
 --- !u!114 &6097628724906625276
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using Fusion.Sockets;
+using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 /// <summary>
@@ -16,6 +17,8 @@ public class NetworkController : INetworkRunnerCallbacks
     public const string PASSWORD_KEY = "Password";
     private readonly NetworkRunnerController _networkRunnerController;
     private readonly SceneController _sceneController;
+    private readonly Subject<Unit> _loadSceneCompleted = new Subject<Unit>();
+    public IObservable<Unit> LoadSceneCompleted => _loadSceneCompleted;
 
     private List<SessionInfo> _sessionList;
     private bool _isLobbyScene;
@@ -80,7 +83,6 @@ public class NetworkController : INetworkRunnerCallbacks
         }
 
         await _sceneController.UnloadLobbyAsync();
-        await _sceneController.LoadWorldAsync(customSessionInfo.WorldID);
 
         await _networkRunnerController.StartSessionAsync(new StartGameArgs
         {
@@ -93,6 +95,9 @@ public class NetworkController : INetworkRunnerCallbacks
                 {PASSWORD_KEY, customSessionInfo.Password}
             }
         });
+
+        await _sceneController.LoadWorldAsync(customSessionInfo.WorldID);
+        Debug.Log($"active = {SceneManager.GetActiveScene().name}");
 
         _isLobbyScene = false;
         _currentWorldID = customSessionInfo.WorldID;
@@ -139,7 +144,6 @@ public class NetworkController : INetworkRunnerCallbacks
         }
 
         await _sceneController.UnloadLobbyAsync();
-        await _sceneController.LoadWorldAsync(customSessionInfo.WorldID);
 
         await _networkRunnerController.StartSessionAsync(new StartGameArgs
         {
@@ -204,7 +208,11 @@ public class NetworkController : INetworkRunnerCallbacks
     void INetworkRunnerCallbacks.OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
     void INetworkRunnerCallbacks.OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     void INetworkRunnerCallbacks.OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
-    void INetworkRunnerCallbacks.OnSceneLoadDone(NetworkRunner runner) { }
+    void INetworkRunnerCallbacks.OnSceneLoadDone(NetworkRunner runner)
+    {
+        // シーンの読み込み完了時にイベントを通知し、初期化を行う
+        _loadSceneCompleted.OnNext(Unit.Default);   
+    }
     void INetworkRunnerCallbacks.OnSceneLoadStart(NetworkRunner runner) { }
 
 }
