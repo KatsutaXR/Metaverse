@@ -34,12 +34,12 @@ public class StrokeController : NetworkBehaviour
             Points.Add(point);
             _lineRenderer.positionCount = Points.Count;
             _lineRenderer.SetPosition(Points.Count - 1, point);
-            SetStrokePosition(Points.Count - 1, point); // 同期
+            RpcSetStrokePosition(Points.Count - 1, point); // 同期
         }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public void SetStrokePosition(int count, Vector3 point)
+    public void RpcSetStrokePosition(int count, Vector3 point)
     {
         _lineRenderer.SetPosition(count, point);
     }
