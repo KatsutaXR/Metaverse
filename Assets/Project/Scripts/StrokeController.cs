@@ -41,6 +41,7 @@ public class StrokeController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RpcSetStrokePosition(int count, Vector3 point)
     {
+        _lineRenderer.positionCount = Points.Count;
         _lineRenderer.SetPosition(count, point);
     }
 }
