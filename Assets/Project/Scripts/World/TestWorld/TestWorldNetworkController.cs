@@ -65,4 +65,17 @@ public class TestWorldNetworkController : WorldNetworkController
     {
         _runner.RemoveCallbacks(this);
     }
+
+    public override void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        // 線の同期
+        var strokeManagers = GameObject.FindObjectsByType<StrokeManager>(FindObjectsSortMode.None);
+        if (strokeManagers.Length != 0)
+        {
+            foreach (var manager in strokeManagers)
+            {
+                manager.SyncStrokes(player);
+            }
+        }
+    }
 }

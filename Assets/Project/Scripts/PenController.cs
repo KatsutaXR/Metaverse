@@ -1,4 +1,3 @@
-using System;
 using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,28 +7,22 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class PenController : NetworkBehaviour
 {
     [SerializeField] private Transform _tip;
-    [SerializeField] private NetworkPrefabRef _strokePrefab;
     [SerializeField] private InputActionReference _drawActionRef;
     [SerializeField] private Button _clearButton;
-    [SerializeField] private float _segmentLength = 0.000001f;
+    [SerializeField] private float _segmentLength = 0.01f;
     [SerializeField] private XRBaseInteractor _xrBaseinteractor;
+    [SerializeField] private StrokeManager _strokeManager;
 
-    // 線を一括削除できるように、各ペンで書いた線に対して固有のタグを持たせる
-    [Networked] public string UniquePenTag { get; set; }
-    private StrokeController _currentStroke;
+    private bool _isDrawing;
     private Vector3 _lastPos;
 
     public void Initialize(XRBaseInteractor xRBaseInteractor)
     {
-        _clearButton.onClick.AddListener(DeleteAllStroke);
+        _clearButton.onClick.AddListener(RequestDeleteStrokes);
         _xrBaseinteractor = xRBaseInteractor;
+        _isDrawing = false;
 
-        // マスタークライアントが各ペン固有のタグを設定する
-        if (Runner.IsSharedModeMasterClient)
-        {
-            Object.ReleaseStateAuthority();
-            UniquePenTag = "Pen_" + Guid.NewGuid().ToString();
-        }
+        if (Runner.IsSharedModeMasterClient) Object.ReleaseStateAuthority();
     }
 
     private void OnEnable()
@@ -63,23 +56,23 @@ public class PenController : NetworkBehaviour
 
     private void DrawStroke()
     {
-        if (_currentStroke == null)
-        {
-            _currentStroke = Runner.Spawn(_strokePrefab, _tip.position, Quaternion.identity, Runner.LocalPlayer).GetComponent<StrokeController>();
-            _currentStroke.PenTag = UniquePenTag;
-            _lastPos = _tip.position;
-        }
-
-        if (_currentStroke != null)
+        if (_isDrawing)
         {
             float dist = Vector3.Distance(_tip.position, _lastPos);
-            
+
             if (dist >= _segmentLength)
             {
-                _currentStroke.AddPoint(_tip.position, _segmentLength);
+                _strokeManager.AddPoint(false, _tip.position);
                 _lastPos = _tip.position;
             }
         }
+        else
+        {
+            _strokeManager.AddPoint(true, _tip.position);
+            _lastPos = _tip.position;
+            _isDrawing = true;
+        }
+
     }
 
     private void OnDrawCanceled(InputAction.CallbackContext ctx)
@@ -87,21 +80,13 @@ public class PenController : NetworkBehaviour
         var grabbed = _xrBaseinteractor.firstInteractableSelected?.transform.gameObject;
         if (grabbed != gameObject) return;
 
-        if (_currentStroke != null)
-        {
-            _currentStroke = null; // 完了、保持したまま残す
-        }
+        _isDrawing = false;
     }
 
-    private void DeleteAllStroke()
+    private void RequestDeleteStrokes()
     {
-        foreach (var stroke in GameObject.FindObjectsByType<StrokeController>(FindObjectsSortMode.None))
-        {
-            if (stroke.PenTag != UniquePenTag) continue;
-            if (stroke.TryGetComponent<NetworkObject>(out var netObj))
-            {
-                Runner.Despawn(netObj); // 全クライアントに反映
-            }
-        }
+        Debug.Log("RequestDeleteStrokes");
+        _isDrawing = false;
+        _strokeManager.DeleteStrokes();
     }
 }
