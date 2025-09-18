@@ -308,6 +308,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenPen
       objectReference: {fileID: 0}
+    - target: {fileID: 1624898985186999194, guid: 1b400ecf8343fb246a4e1ace1d95a881, type: 3}
+      propertyPath: _strokePrefab
+      value: 
+      objectReference: {fileID: 2888716924987986115, guid: f84918218f3aeb14ca4a3539207ce670, type: 3}
     - target: {fileID: 5638395892870830802, guid: 1b400ecf8343fb246a4e1ace1d95a881, type: 3}
       propertyPath: SortKey
       value: 2385035277
@@ -928,6 +932,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1157955495201535482, guid: cd213ac3a9c4e6943b7b3884ff136979, type: 3}
+      propertyPath: _strokePrefab
+      value: 
+      objectReference: {fileID: 3623382815125795425, guid: 003a1a166a53be9458c3734633b5c89f, type: 3}
     - target: {fileID: 6528881139270066333, guid: cd213ac3a9c4e6943b7b3884ff136979, type: 3}
       propertyPath: SortKey
       value: 1342386299
@@ -1063,6 +1071,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BluePen
       objectReference: {fileID: 0}
+    - target: {fileID: 7934671798620328948, guid: d54402db7f578a348b412eb3bcd1aec9, type: 3}
+      propertyPath: _strokePrefab
+      value: 
+      objectReference: {fileID: 4503934581755808406, guid: 46d7f0db650a229438dc26125f0fbda3, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1363,6 +1375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackPen
       objectReference: {fileID: 0}
+    - target: {fileID: 7967406899544179751, guid: e1a5d8cf3c586194c97fb5939f273ad9, type: 3}
+      propertyPath: _strokePrefab
+      value: 
+      objectReference: {fileID: 4613666900322940187, guid: 865fecf1526e93a4ab1f810a090dd444, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

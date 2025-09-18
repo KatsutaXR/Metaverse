@@ -5,15 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Project/Scenes/SystemScene.unity
     guid: 07c285106686acd41a29b0f8a97c143c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Project/Scenes/LobbyScene.unity
     guid: 5bd71c783b434d0429191385e8a706e2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Project/Scenes/Worlds/TestWorld.unity
     guid: 51ea1db786eabca42bd743a33925d257
+  - enabled: 1
+    path: Assets/Photon/PhotonVoice/Demos/Fusion/DemoNetworkObject/Scene.unity
+    guid: 64b14236c88a0fb44adaeda9ded16a2a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1ff2cad17b5e1ab43ad77b69b0c7b0c5, type: 2}

@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _StrokeCount: 0
-  _strokePrefab: {fileID: 6564679454508927651, guid: 865fecf1526e93a4ab1f810a090dd444, type: 3}
+  _strokePrefab: {fileID: 4613666900322940187, guid: 865fecf1526e93a4ab1f810a090dd444, type: 3}
 --- !u!1 &4889062227149735276
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +353,6 @@ GameObject:
   - component: {fileID: 3832671670526811870}
   - component: {fileID: 3923309602747120320}
   - component: {fileID: 4146730427246726747}
-  - component: {fileID: 5378739385599899031}
   m_Layer: 0
   m_Name: BlackPen
   m_TagString: Untagged
@@ -669,20 +668,6 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!114 &5378739385599899031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5517764312480739706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1541381998, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Guid:
-    RawGuidValue: e1a5d8cf3c586194c97fb5939f273ad9
 --- !u!1 &6750902214348968536
 GameObject:
   m_ObjectHideFlags: 0

@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _StrokeCount: 0
-  _strokePrefab: {fileID: 6564679454508927651, guid: 003a1a166a53be9458c3734633b5c89f, type: 3}
+  _strokePrefab: {fileID: 3623382815125795425, guid: 003a1a166a53be9458c3734633b5c89f, type: 3}
 --- !u!1 &3539653672239580215
 GameObject:
   m_ObjectHideFlags: 0

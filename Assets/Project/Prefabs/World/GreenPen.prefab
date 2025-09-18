@@ -753,7 +753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _StrokeCount: 0
-  _strokePrefab: {fileID: 6564679454508927651, guid: f84918218f3aeb14ca4a3539207ce670, type: 3}
+  _strokePrefab: {fileID: 2888716924987986115, guid: f84918218f3aeb14ca4a3539207ce670, type: 3}
 --- !u!1 &7960944692550145062
 GameObject:
   m_ObjectHideFlags: 0
