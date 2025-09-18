@@ -10,16 +10,15 @@ public class PenController : NetworkBehaviour
     [SerializeField] private InputActionReference _drawActionRef;
     [SerializeField] private Button _clearButton;
     [SerializeField] private float _segmentLength = 0.01f;
-    [SerializeField] private XRBaseInteractor _xrBaseinteractor;
-    [SerializeField] private StrokeManager _strokeManager;
+    [SerializeField] private StrokeController _strokeController;
 
     private bool _isDrawing;
     private Vector3 _lastPos;
+    private XRBaseInteractor _xrBaseinteractor;
 
-    public void Initialize(XRBaseInteractor xRBaseInteractor)
+    public override void Spawned()
     {
         _clearButton.onClick.AddListener(RequestDeleteStrokes);
-        _xrBaseinteractor = xRBaseInteractor;
         _isDrawing = false;
 
         if (Runner.IsSharedModeMasterClient) Object.ReleaseStateAuthority();
@@ -33,14 +32,16 @@ public class PenController : NetworkBehaviour
 
     public override void Render()
     {
-        if (_xrBaseinteractor == null) return;
-        if (_xrBaseinteractor.firstInteractableSelected == null) return;
+        if (_xrBaseinteractor == null)
+        {
+            _xrBaseinteractor = FindFirstObjectByType<PlayerReferences>()?.RightNearFarInteractor;
+            if (_xrBaseinteractor == null) return;
+        }
 
+        if (_xrBaseinteractor.firstInteractableSelected == null) return;
         
         var grabbed = _xrBaseinteractor.firstInteractableSelected?.transform.gameObject;
         if (grabbed != gameObject) return;
-
-        Debug.Log($"grabbed = {grabbed}");
 
         if (!HasStateAuthority)
         {
@@ -62,13 +63,13 @@ public class PenController : NetworkBehaviour
 
             if (dist >= _segmentLength)
             {
-                _strokeManager.AddPoint(false, _tip.position);
+                _strokeController.AddPoint(false, _tip.position);
                 _lastPos = _tip.position;
             }
         }
         else
         {
-            _strokeManager.AddPoint(true, _tip.position);
+            _strokeController.AddPoint(true, _tip.position);
             _lastPos = _tip.position;
             _isDrawing = true;
         }
@@ -77,16 +78,13 @@ public class PenController : NetworkBehaviour
 
     private void OnDrawCanceled(InputAction.CallbackContext ctx)
     {
-        var grabbed = _xrBaseinteractor.firstInteractableSelected?.transform.gameObject;
-        if (grabbed != gameObject) return;
-
-        _isDrawing = false;
+        if (_isDrawing) _isDrawing = false;
     }
 
     private void RequestDeleteStrokes()
     {
         Debug.Log("RequestDeleteStrokes");
         _isDrawing = false;
-        _strokeManager.DeleteStrokes();
+        _strokeController.DeleteStrokes();
     }
 }

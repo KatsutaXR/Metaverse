@@ -20,6 +20,10 @@ public class TestWorldNetworkController : WorldNetworkController
         _playerData = playerData;
     }
 
+    /// <summary>
+    /// ワールド内の初期化処理を行う
+    /// 同期オブジェクトに関しては基本各Spawned内で初期化させる
+    /// </summary>
     public override void Initialize()
     {
         _runner.AddCallbacks(this);
@@ -41,16 +45,6 @@ public class TestWorldNetworkController : WorldNetworkController
             }
         }
 
-        // ペンの設定
-        PenController[] penControllers = GameObject.FindObjectsByType<PenController>(FindObjectsSortMode.None);
-        if (penControllers.Length != 0)
-        {
-            foreach (var penController in penControllers)
-            {
-                penController.Initialize(playerReferences.RightNearFarInteractor);
-            }
-        }
-
         // todo:最初はSetActive = falseにする
         GameObject clientUI = _testWorldObjectFactory.CreateClientUI();
         _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
@@ -69,7 +63,7 @@ public class TestWorldNetworkController : WorldNetworkController
     public override void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         // 線の同期
-        var strokeManagers = GameObject.FindObjectsByType<StrokeManager>(FindObjectsSortMode.None);
+        var strokeManagers = GameObject.FindObjectsByType<StrokeController>(FindObjectsSortMode.None);
         if (strokeManagers.Length != 0)
         {
             foreach (var manager in strokeManagers)
