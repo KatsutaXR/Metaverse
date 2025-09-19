@@ -156,12 +156,12 @@ public class SyncedPlayerAvatar : NetworkBehaviour
 
             _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.RightHand, _interpRightHandPosition + (_targetRightHandTransform.rotation * _fixRightPosition));
+            _animator.SetIKPosition(AvatarIKGoal.RightHand, _interpRightHandPosition + (_interpRightHandRotation * _fixRightPosition));
             _animator.SetIKRotation(AvatarIKGoal.RightHand, _interpRightHandRotation * _fixRightRotation);
 
             _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _interpLeftHandPosition + (_targetLeftHandTransform.rotation * _fixLeftPosition));
+            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _interpLeftHandPosition + (_interpLeftHandRotation * _fixLeftPosition));
             _animator.SetIKRotation(AvatarIKGoal.LeftHand, _interpLeftHandRotation * _fixLeftRotation);
         }
     }
