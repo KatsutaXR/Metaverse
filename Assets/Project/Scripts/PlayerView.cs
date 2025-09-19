@@ -7,31 +7,33 @@ public class PlayerView : MonoBehaviour
 {
     [SerializeField] private InputActionReference _toggleClientUIAction;
     [SerializeField] private InputActionReference _jumpAction; // todo:ジャンプを追加する
-    [SerializeField] private InputActionReference _xButtonAction;
+    [SerializeField] private InputActionReference _setMicActiveAction;
     [SerializeField] private GameObject _player;
 
     private Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
-    private Subject<Unit> _onXButtonPressed = new Subject<Unit>();
+    private Subject<Unit> _setMicActiveRequested = new Subject<Unit>();
 
     public IObservable<Unit> ToggleClientUIRequested => _toggleClientUIRequested;
-    public IObservable<Unit> OnXButtonPressed => _onXButtonPressed;
+    public IObservable<Unit> SetMicActiveRequested => _setMicActiveRequested;
 
     private void OnEnable()
     {
         _toggleClientUIAction.action.Enable();
+        _setMicActiveAction.action.Enable();
+
         _toggleClientUIAction.action.performed += OnToggleClientUIPerformed;
-        _xButtonAction.action.performed += OnXPerformed;
+        _setMicActiveAction.action.performed += OnSetMicActivePerformed;
     }
 
     private void OnDisable()
     {
         _toggleClientUIAction.action.performed -= OnToggleClientUIPerformed;
-        _xButtonAction.action.performed -= OnXPerformed;
+        _setMicActiveAction.action.performed -= OnSetMicActivePerformed;
     }
 
-    private void OnXPerformed(InputAction.CallbackContext context)
+    private void OnSetMicActivePerformed(InputAction.CallbackContext context)
     {
-        _onXButtonPressed.OnNext(Unit.Default);
+        _setMicActiveRequested.OnNext(Unit.Default);
     }
 
     private void OnToggleClientUIPerformed(InputAction.CallbackContext context)

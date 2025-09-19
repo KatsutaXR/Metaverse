@@ -7,6 +7,7 @@ public class PlayerPresenter : IDisposable
 {
     private PlayerView _playerView;
     private PlayerModel _playerModel;
+    private RecorderController _recorderController;
 
     // Mediator経由のイベント
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
@@ -16,9 +17,10 @@ public class PlayerPresenter : IDisposable
     private CompositeDisposable _disposable;
 
     [Inject]
-    public PlayerPresenter(PlayerModel playerModel)
+    public PlayerPresenter(PlayerModel playerModel, RecorderController recorderController)
     {
         _playerModel = playerModel;
+        _recorderController = recorderController;
     }
 
 
@@ -27,11 +29,13 @@ public class PlayerPresenter : IDisposable
         _playerView = playerView;
         _disposable = new CompositeDisposable();
 
-        // _playerView.OnXPressed
-        //     .Subscribe(_ => _model.ResizePlayer(2f)) // Xで大きく
-        //     .AddTo(view);
+        _playerView
+            .SetMicActiveRequested
+            .Subscribe(_ => _recorderController.SetMicActive())
+            .AddTo(_disposable);
 
-        _playerView.ToggleClientUIRequested
+        _playerView
+            .ToggleClientUIRequested
             .Subscribe(_ =>
             {
                 _playerModel.OnToggleClientUIRequested();

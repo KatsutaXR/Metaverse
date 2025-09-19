@@ -50,7 +50,7 @@ public class TestWorldNetworkController : WorldNetworkController
         _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
         WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
         worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
-        _worldUIPresenter.Initialize(clientUI.GetComponentInChildren<WorldUIView>(true));
+        _worldUIPresenter.Initialize(worldUIView);
 
         _playerPresenter.Initialize(playerObject.GetComponentInChildren<PlayerView>(true));
     }

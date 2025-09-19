@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PressXButton",
+                    "name": "SetMicActive",
                     "type": "Button",
                     "id": "2aeffe56-1cce-42c8-9e62-4aca640754cf",
                     "expectedControlType": "",
@@ -52,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PressXButton",
+                    "action": "SetMicActive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

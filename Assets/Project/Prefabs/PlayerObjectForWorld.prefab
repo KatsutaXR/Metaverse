@@ -557,7 +557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _toggleClientUIAction: {fileID: 1484478365706470956, guid: 20e970d91e6605d4ab1e58b586dd126f, type: 3}
   _jumpAction: {fileID: 0}
-  _xButtonAction: {fileID: 1484478365706470956, guid: 20e970d91e6605d4ab1e58b586dd126f, type: 3}
+  _setMicActiveAction: {fileID: -3774797227901928793, guid: 20e970d91e6605d4ab1e58b586dd126f, type: 3}
   _player: {fileID: 2353443657497972726}
 --- !u!1 &4162740810932302304
 GameObject:

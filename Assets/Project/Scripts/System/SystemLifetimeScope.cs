@@ -18,6 +18,7 @@ public class SystemLifetimeScope : LifetimeScope
 
         builder.RegisterComponent(_networkRunnerController);
         
+        builder.Register<RecorderController>(Lifetime.Singleton);
         builder.Register<NetworkController>(Lifetime.Singleton);
         builder.Register<SceneController>(Lifetime.Singleton);
         builder.RegisterEntryPoint<GameLauncher>(Lifetime.Singleton);

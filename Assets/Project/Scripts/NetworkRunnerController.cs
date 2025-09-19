@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Photon.Voice.Unity;
 using UnityEngine;
 using VContainer;
 
@@ -8,6 +9,7 @@ public class NetworkRunnerController : MonoBehaviour
     private NetworkRunner _runner;
     public NetworkRunner Runner => _runner;
     [Inject] private PrefabDatabase _prefabDatabase;
+    [Inject] private RecorderController _recorderController;
 
     /// <summary>
     /// ネットワークランナーを生成して他から参照する
@@ -16,7 +18,9 @@ public class NetworkRunnerController : MonoBehaviour
     public void Initialize()
     {
         var runnerPrefab = _prefabDatabase.NetworkRunnerPrefab;
-        _runner = Instantiate(runnerPrefab).GetComponent<NetworkRunner>();
+        var obj = Instantiate(runnerPrefab);
+        _runner = obj.GetComponent<NetworkRunner>();
+        _recorderController.SetRecorder(obj.GetComponentInChildren<Recorder>(true));
     }
 
     public async UniTask JoinLSessionLobbyAsync()
@@ -47,7 +51,8 @@ public class NetworkRunnerController : MonoBehaviour
         await UniTask.Yield(PlayerLoopTiming.PostLateUpdate);
 
         var runnerPrefab = _prefabDatabase.NetworkRunnerPrefab;
-        Debug.Log($"runnerPrefab = {runnerPrefab}");
-        _runner = Instantiate(runnerPrefab).GetComponent<NetworkRunner>();
+        var obj = Instantiate(runnerPrefab);
+        _runner = obj.GetComponent<NetworkRunner>();
+        _recorderController.SetRecorder(obj.GetComponentInChildren<Recorder>(true));
     }
 }
