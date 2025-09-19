@@ -1,5 +1,4 @@
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -142,12 +141,12 @@ public class SyncedPlayerAvatar : NetworkBehaviour
 
             _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.RightHand, _targetRightHandTransform.position);
+            _animator.SetIKPosition(AvatarIKGoal.RightHand, _targetRightHandTransform.position + (_targetRightHandTransform.rotation * _fixRightPosition));
             _animator.SetIKRotation(AvatarIKGoal.RightHand, _targetRightHandTransform.rotation * _fixRightRotation);
 
             _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _targetLeftHandTransform.position);
+            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _targetLeftHandTransform.position + (_targetLeftHandTransform.rotation * _fixLeftPosition));
             _animator.SetIKRotation(AvatarIKGoal.LeftHand, _targetLeftHandTransform.rotation * _fixLeftRotation);
         }
         else
@@ -157,12 +156,12 @@ public class SyncedPlayerAvatar : NetworkBehaviour
 
             _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.RightHand, _interpRightHandPosition);
+            _animator.SetIKPosition(AvatarIKGoal.RightHand, _interpRightHandPosition + (_targetRightHandTransform.rotation * _fixRightPosition));
             _animator.SetIKRotation(AvatarIKGoal.RightHand, _interpRightHandRotation * _fixRightRotation);
 
             _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
             _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _interpLeftHandPosition);
+            _animator.SetIKPosition(AvatarIKGoal.LeftHand, _interpLeftHandPosition + (_targetLeftHandTransform.rotation * _fixLeftPosition));
             _animator.SetIKRotation(AvatarIKGoal.LeftHand, _interpLeftHandRotation * _fixLeftRotation);
         }
     }

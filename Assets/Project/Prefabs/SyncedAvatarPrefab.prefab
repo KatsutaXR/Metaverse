@@ -3367,9 +3367,9 @@ MonoBehaviour:
   _animator: {fileID: 1204474994990582068}
   _moveActionRef: {fileID: 6972639530819350904, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _jumpActionRef: {fileID: 0}
-  _fixLeftPosition: {x: 0, y: 0, z: 0}
+  _fixLeftPosition: {x: 0, y: 0, z: -0.1}
   _fixLeftRotation: {x: 0, y: 0, z: 0.70710677, w: 0.70710677}
-  _fixRightPosition: {x: 0, y: 0, z: 0}
+  _fixRightPosition: {x: 0, y: 0, z: -0.1}
   _fixRightRotation: {x: 0, y: 0, z: 0.70710677, w: -0.70710677}
 --- !u!95 &1204474994990582068
 Animator:
