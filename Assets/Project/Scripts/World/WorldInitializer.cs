@@ -1,3 +1,5 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
 /// <summary>
@@ -6,5 +8,26 @@ using VContainer.Unity;
 /// </summary>
 public abstract class WorldInitializer : IStartable
 {
-    public abstract void Start();
+    protected WorldNetworkController _worldNetworkController;
+    protected NetworkController _networkController;
+    protected WorldDatabase _worldDatabase;
+
+    protected virtual void InitializeBase()
+    {
+        // 初期化処理
+
+        // ワールド用シーンをアクティブにする
+        var worldData = _worldDatabase.GetWorldById(WorldID.TestWorld);
+        if (worldData == null)
+        {
+            Debug.LogError($"WorldData for {WorldID.TestWorld} not found.");
+            return;
+        }
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldData.WorldName));
+
+        _worldNetworkController.Initialize();
+    }
+    public virtual void Start() { }
+
+    public abstract void Initialize();
 }

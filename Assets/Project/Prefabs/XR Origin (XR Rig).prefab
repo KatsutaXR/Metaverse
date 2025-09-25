@@ -164,10 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c48104f8f8fbeb429065ff6940dc07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _origin: {fileID: 0}
   _camera: {fileID: 7545634410733539554}
-  _body: {fileID: 0}
   _rightHand: {fileID: 7512633816001971338}
   _leftHand: {fileID: 2143265427990031522}
+  _rightNearFarInteractor: {fileID: 0}
 --- !u!114 &3562152529375189126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +182,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _toggleClientUIAction: {fileID: 1484478365706470956, guid: 20e970d91e6605d4ab1e58b586dd126f, type: 3}
-  _xButtonAction: {fileID: 1484478365706470956, guid: 20e970d91e6605d4ab1e58b586dd126f, type: 3}
+  _jumpAction: {fileID: 0}
+  _setMicActiveAction: {fileID: 0}
   _player: {fileID: 939697962085786333}
 --- !u!1 &1014167706688623347
 GameObject:

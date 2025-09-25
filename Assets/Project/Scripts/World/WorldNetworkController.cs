@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using Fusion.Sockets;
-using Photon.Voice.Unity;
 using UnityEngine;
 
 /// <summary>
@@ -15,16 +15,64 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     protected NetworkRunner _runner;
     protected PrefabDatabase _prefabDatabase;
     protected WorldDatabase _worldDatabase;
+    protected WorldObjectFactory _worldObjectFactory;
     protected ClientUIPresenter _clientUIPresenter;
     protected PlayerPresenter _playerPresenter;
     protected WorldUIPresenter _worldUIPresenter;
     protected PlayerData _playerData;
 
-    public abstract void Initialize();
+    public virtual void InitializeBase()
+    {
+        _runner.AddCallbacks(this);
 
+        GameObject playerObject = _worldObjectFactory.CreatePlayer(_runner, _runner.LocalPlayer);
+        _playerData.Player = playerObject;
+        var playerReferences = playerObject.GetComponentInChildren<PlayerReferences>(true);
+
+        // 鏡の設定
+        SetupMirror(playerReferences);
+        SetupClientUI(playerReferences);
+
+        _playerPresenter.Initialize(playerObject.GetComponentInChildren<PlayerView>(true));
+    }
+
+    protected void SetupMirror(PlayerReferences playerReferences)
+    {
+        var mirrors = GameObject.FindGameObjectsWithTag("Mirror");
+        foreach (var mirror in mirrors)
+        {
+            mirror.GetComponent<MirrorView>().PlayerCamera = playerReferences.Camera;
+        }
+    }
+
+    // todo:最初は非活性にする
+    protected void SetupClientUI(PlayerReferences playerReferences)
+    {
+        GameObject clientUI = _worldObjectFactory.CreateClientUI();
+        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
+        WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
+        worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
+        _worldUIPresenter.Initialize(worldUIView);
+    }
+
+    protected void SetupStroke(PlayerRef player)
+    {
+        var strokeManagers = GameObject.FindObjectsByType<StrokeController>(FindObjectsSortMode.None);
+        if (strokeManagers.Length != 0)
+        {
+            foreach (var manager in strokeManagers)
+            {
+                manager.SyncStrokes(player);
+            }
+        }
+    }
+
+    public virtual void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        SetupStroke(player);
+    }
     public virtual void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public virtual void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public virtual void OnPlayerJoined(NetworkRunner runner, PlayerRef player) { }
     public virtual void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
     public virtual void OnInput(NetworkRunner runner, NetworkInput input) { }
     public virtual void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -42,5 +90,6 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     public virtual void OnSceneLoadDone(NetworkRunner runner) { }
     public virtual void OnSceneLoadStart(NetworkRunner runner) { }
 
+    public abstract void Initialize();
     public abstract void Dispose();
 }

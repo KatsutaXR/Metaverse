@@ -4,14 +4,19 @@ using UnityEngine;
 public abstract class WorldObjectFactory
 {
     protected PrefabDatabase _prefabDatabase;
-    public abstract Vector3 SpawnPlayerPosition { get; }
-    public abstract Quaternion SpawnPlayerRotation { get; }
+    protected NetworkController _networkController;
+    protected WorldDatabase _worldDatabase;
+    public abstract WorldID TargetWorldID { get; }
 
     public virtual GameObject CreatePlayer(NetworkRunner runner, PlayerRef playerRef)
     {
-        GameObject player = Object.Instantiate(_prefabDatabase.PlayerPrefabForWorld, SpawnPlayerPosition, SpawnPlayerRotation);
+        var worldData = _worldDatabase.GetWorldById(TargetWorldID);
+        var spawnPosition = worldData.PlayerSpawnPosiion;
+        var spawnRotation = worldData.PlayerSpawnRotation;
 
-        NetworkObject syncedAvatar = runner.Spawn(_prefabDatabase.SyncedPlayerPrefab, SpawnPlayerPosition, SpawnPlayerRotation, playerRef);
+        GameObject player = Object.Instantiate(_prefabDatabase.PlayerPrefabForWorld, spawnPosition, spawnRotation);
+
+        NetworkObject syncedAvatar = runner.Spawn(_prefabDatabase.SyncedPlayerPrefab, spawnPosition, spawnRotation, playerRef);
         syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(player.GetComponentInChildren<PlayerReferences>(true));
 
         return player;

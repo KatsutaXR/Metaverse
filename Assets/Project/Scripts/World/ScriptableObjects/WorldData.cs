@@ -12,10 +12,14 @@ public class WorldData : ScriptableObject
     [SerializeField] private string _worldDescription;
     [SerializeField] private int _maxPlayers;
     [SerializeField] private Sprite _worldImage;
+    [SerializeField] private Vector3 _playerSpawnPosition;
+    [SerializeField] private Quaternion _playerSpawnRotation;
 
     public WorldID WorldID => _worldID;
     public string WorldName => _worldName;
-    public string WorldDescription => _worldDescription; 
+    public string WorldDescription => _worldDescription;
     public int MaxPlayers => _maxPlayers;
     public Sprite WorldImage => _worldImage;
+    public Vector3 PlayerSpawnPosiion => _playerSpawnPosition;
+    public Quaternion PlayerSpawnRotation => _playerSpawnRotation;
 }

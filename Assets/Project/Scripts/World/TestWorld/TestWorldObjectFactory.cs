@@ -1,15 +1,13 @@
-using UnityEngine;
 using VContainer;
 
 public class TestWorldObjectFactory : WorldObjectFactory
 {
-    private Vector3 _spawnPlayerPosition = Vector3.zero; // プレイヤーの初期位置
-    private Quaternion _spawnPlayerRotation = Quaternion.Euler(0, 0, 0); // プレイヤーの初期回転角度
-    public override Vector3 SpawnPlayerPosition => _spawnPlayerPosition;
-    public override Quaternion SpawnPlayerRotation => _spawnPlayerRotation;
+    public override WorldID TargetWorldID => WorldID.TestWorld;
     [Inject]
-    public TestWorldObjectFactory(PrefabDatabase prefabDatabase)
+    public TestWorldObjectFactory(PrefabDatabase prefabDatabase, NetworkController networkController, WorldDatabase worldDatabase)
     {
         _prefabDatabase = prefabDatabase;
+        _networkController = networkController;
+        _worldDatabase = worldDatabase;
     }
 }
