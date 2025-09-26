@@ -3,13 +3,11 @@ using VContainer;
 
 public class ClientUIModel
 {
-    private IClientUIModelUseCase _useCase;
-    private PlayerData _playerData;
+    private ClientUIModelUseCase _useCase;
     [Inject]
-    public ClientUIModel(IClientUIModelUseCase useCase, PlayerData playerData)
+    public ClientUIModel(ClientUIModelUseCase useCase)
     {
         _useCase = useCase;
-        _playerData = playerData;
     }
 
     public Vector3 Respawn()

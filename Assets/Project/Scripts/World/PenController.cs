@@ -36,7 +36,7 @@ public class PenController : NetworkBehaviour
         }
 
         if (_xrBaseinteractor.firstInteractableSelected == null) return;
-        
+
         var grabbed = _xrBaseinteractor.firstInteractableSelected?.transform.gameObject;
         if (grabbed != gameObject) return;
 
@@ -45,7 +45,7 @@ public class PenController : NetworkBehaviour
             Debug.Log("!HasStateAuthority");
             Object.RequestStateAuthority();
         }
-        
+
         if (_drawActionRef.action.IsPressed())
         {
             DrawStroke();

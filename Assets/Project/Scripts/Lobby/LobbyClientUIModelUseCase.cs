@@ -1,10 +1,13 @@
 using UnityEngine;
+using VContainer;
 
-public class LobbyClientUIModelUseCase : IClientUIModelUseCase
+public class LobbyClientUIModelUseCase : ClientUIModelUseCase
 {
-    private Vector3 _respawnPosition = Vector3.zero;
-    public Vector3 Respawn()
+    public override WorldID TargetWorldID => WorldID.None;
+
+    [Inject]
+    public LobbyClientUIModelUseCase(WorldDatabase worldDatabase)
     {
-        return _respawnPosition;
+        _worldDatabase = worldDatabase;
     }
 }

@@ -11,16 +11,17 @@ public abstract class WorldInitializer : IStartable
     protected WorldNetworkController _worldNetworkController;
     protected NetworkController _networkController;
     protected WorldDatabase _worldDatabase;
+    public abstract WorldID TargetWorldID { get; }
 
     protected virtual void InitializeBase()
     {
         // 初期化処理
 
         // ワールド用シーンをアクティブにする
-        var worldData = _worldDatabase.GetWorldById(WorldID.TestWorld);
+        var worldData = _worldDatabase.GetWorldById(TargetWorldID);
         if (worldData == null)
         {
-            Debug.LogError($"WorldData for {WorldID.TestWorld} not found.");
+            Debug.LogError($"WorldData for {TargetWorldID} not found.");
             return;
         }
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(worldData.WorldName));

@@ -8,10 +8,8 @@ using UnityEngine;
 /// </summary>
 public abstract class WorldLifetimeScope : LifetimeScope
 {
-    [SerializeField] private WorldView _worldView;
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponent(_worldView);
         builder.Register<ClientUIModel>(Lifetime.Scoped);
         builder.Register<ClientUIPresenter>(Lifetime.Scoped);
         builder.Register<WorldUIPresenter>(Lifetime.Scoped);

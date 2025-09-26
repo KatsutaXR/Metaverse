@@ -1,5 +1,7 @@
 public enum WorldID
 {
-    TestWorld = 0,
-    None = 1,
+    None = 0,
+    TestWorld = 1,
+    NightBeach = 2,
+    SimpleRoom = 3,
 }

@@ -38,10 +38,13 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
 
     protected void SetupMirror(PlayerReferences playerReferences)
     {
-        var mirrors = GameObject.FindGameObjectsWithTag("Mirror");
-        foreach (var mirror in mirrors)
+        var mirrors = GameObject.FindObjectsByType<MirrorView>(FindObjectsSortMode.None);
+        if (mirrors.Length != 0)
         {
-            mirror.GetComponent<MirrorView>().PlayerCamera = playerReferences.Camera;
+            foreach (var mirror in mirrors)
+            {
+                mirror.PlayerCamera = playerReferences.Camera;
+            }
         }
     }
 

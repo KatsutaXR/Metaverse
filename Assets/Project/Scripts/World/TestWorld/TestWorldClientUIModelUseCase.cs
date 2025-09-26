@@ -1,11 +1,11 @@
-using UnityEngine;
+using VContainer;
 
-public class TestWorldClientUIModelUseCase : IClientUIModelUseCase
+public class TestWorldClientUIModelUseCase : ClientUIModelUseCase
 {
-    // todo:リスポーン位置の修正
-    private Vector3 _respawnPosition = Vector3.one;
-    public Vector3 Respawn()
+    public override WorldID TargetWorldID => WorldID.TestWorld;
+    [Inject]
+    public TestWorldClientUIModelUseCase(WorldDatabase worldDatabase)
     {
-        return _respawnPosition;
+        _worldDatabase = worldDatabase;
     }
 }

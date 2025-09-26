@@ -10,8 +10,7 @@ public class TestWorldLifetimeScope : WorldLifetimeScope
 
         builder.Register<TestWorldNetworkController>(Lifetime.Scoped).As<WorldNetworkController>();
         builder.Register<TestWorldObjectFactory>(Lifetime.Scoped).As<WorldObjectFactory>();
-
-        builder.Register<IClientUIModelUseCase, TestWorldClientUIModelUseCase>(Lifetime.Scoped);
+        builder.Register<TestWorldClientUIModelUseCase>(Lifetime.Scoped).As<ClientUIModelUseCase>();
     }
 
 }

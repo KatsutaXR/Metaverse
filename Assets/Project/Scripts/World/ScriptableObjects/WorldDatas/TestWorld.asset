@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a6f9eb47f436c342a65d66403f52275, type: 3}
   m_Name: TestWorld
   m_EditorClassIdentifier: 
-  _worldID: 0
+  _worldID: 1
   _worldName: TestWorld
   _worldDescription: Test
   _maxPlayers: 10
   _worldImage: {fileID: 21300000, guid: 4f5f3cd6307e84742be8dabf08639d93, type: 3}
+  _playerSpawnPosition: {x: 0, y: 0, z: 0}
+  _playerSpawnRotation: {x: 0, y: 0, z: 0, w: 0}

@@ -12,7 +12,7 @@ public class LobbyLifetimeScope : LifetimeScope
         // ClientUI
         builder.Register<ClientUIPresenter>(Lifetime.Scoped);
         builder.Register<ClientUIModel>(Lifetime.Scoped);
-        builder.Register<IClientUIModelUseCase, LobbyClientUIModelUseCase>(Lifetime.Scoped);
+        builder.Register<LobbyClientUIModelUseCase>(Lifetime.Scoped).As<ClientUIModelUseCase>();
 
         // WorldUI
         builder.Register<WorldUIPresenter>(Lifetime.Scoped);
