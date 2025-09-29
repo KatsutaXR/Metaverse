@@ -1,9 +1,9 @@
 using VContainer;
 
-public class NightBeachNetworkController : WorldNetworkController
+public class RooftopNetworkController : WorldNetworkController
 {
     [Inject]
-    public NightBeachNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData)
+    public RooftopNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData)
     {
         _runner = runnerController.Runner;
         _respawnAreaController = respawnAreaController;

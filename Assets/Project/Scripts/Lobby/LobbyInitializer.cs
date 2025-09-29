@@ -17,8 +17,9 @@ public class LobbyInitializer : IStartable
     private PlayerPresenter _playerPresenter;
     private PlayerData _playerData;
     private GlobalNonNativeKeyboard _keyboard;
+    private RespawnAreaController _respawnAreaController;
     [Inject]
-    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData, GlobalNonNativeKeyboard keyboard)
+    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData, GlobalNonNativeKeyboard keyboard, RespawnAreaController respawnAreaController)
     {
         _lobbyObjectFactory = lobbyObjectFactory;
         _prefabDatabase = prefabDatabase;
@@ -28,6 +29,7 @@ public class LobbyInitializer : IStartable
         _playerPresenter = playerPresenter;
         _playerData = playerData;
         _keyboard = keyboard;
+        _respawnAreaController = respawnAreaController;
     }
 
     public void Start()
@@ -36,8 +38,11 @@ public class LobbyInitializer : IStartable
         _playerData.Player = player;
         Transform playerCamera = GameObject.FindWithTag("MainCamera").transform;
 
-        _keyboard.playerRoot = player.transform.Find("XR Origin (XR Rig)");
+        var playerOrigin = GameObject.FindWithTag("Player").transform;
+        _keyboard.playerRoot = playerOrigin;
         _keyboard.cameraTransform = playerCamera;
+
+        _respawnAreaController.Initialize(playerOrigin, WorldID.None);
         
         GameObject[] mirrorObjects = GameObject.FindGameObjectsWithTag("Mirror");
         if (mirrorObjects.Length != 0)
@@ -51,9 +56,10 @@ public class LobbyInitializer : IStartable
         // todo:最初はSetActive = falseにする
         GameObject clientUI = _lobbyObjectFactory.CreateClientUI();
         _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), player.GetComponentInChildren<PlayerReferences>(true));
-        WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
+
+        WorldUIView worldUIView = GameObject.FindAnyObjectByType<WorldUIView>();
         worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
-        _worldUIPresenter.Initialize(clientUI.GetComponentInChildren<WorldUIView>(true));
+        _worldUIPresenter.Initialize(worldUIView);
 
         _playerPresenter.Initialize(player.GetComponentInChildren<PlayerView>(true));
     }

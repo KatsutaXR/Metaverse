@@ -11,10 +11,10 @@ public class WorldUIView : MonoBehaviour
     [SerializeField] GameObject _worldUI;
 
     [SerializeField] GameObject _worldList;
-    [SerializeField] Button _worldListBackButton;
+    // [SerializeField] Button _worldListBackButton;
     [SerializeField] Transform _worldListScrollViewContent;
-    private readonly Subject<Unit> _worldListBackButtonClicked = new Subject<Unit>();
-    public IObservable<Unit> WorldListBackButtonClicked => _worldListBackButtonClicked;
+    // private readonly Subject<Unit> _worldListBackButtonClicked = new Subject<Unit>();
+    // public IObservable<Unit> WorldListBackButtonClicked => _worldListBackButtonClicked;
     private readonly Subject<WorldID> _worldListItemClicked = new Subject<WorldID>();
     public IObservable<WorldID> WorldListItemClicked => _worldListItemClicked;
 
@@ -62,10 +62,10 @@ public class WorldUIView : MonoBehaviour
     {
         _disposable = new CompositeDisposable();
 
-        _worldListBackButton
-            .OnClickAsObservable()
-            .Subscribe(_ => BackToMainMenu())
-            .AddTo(_disposable);
+        // _worldListBackButton
+        //     .OnClickAsObservable()
+        //     .Subscribe(_ => BackToMainMenu())
+        //     .AddTo(_disposable);
 
         _createSessionOKButton
             .OnClickAsObservable()
@@ -168,11 +168,11 @@ public class WorldUIView : MonoBehaviour
         _createSessionSetting.SetActive(true);
     }
 
-    public void GoToWorldUI()
-    {
-        _worldUI.SetActive(true);
-        _worldList.SetActive(true);
-    }
+    // public void GoToWorldUI()
+    // {
+    //     _worldUI.SetActive(true);
+    //     _worldList.SetActive(true);
+    // }
 
     private void GoToWorldDetail()
     {
@@ -182,11 +182,11 @@ public class WorldUIView : MonoBehaviour
         _joinSessionButton.interactable = false;
     }
 
-    private void BackToMainMenu()
-    {
-        _worldList.SetActive(false);
-        _worldListBackButtonClicked.OnNext(Unit.Default);
-    }
+    // private void BackToMainMenu()
+    // {
+    //     _worldList.SetActive(false);
+    //     _worldListBackButtonClicked.OnNext(Unit.Default);
+    // }
 
     private void BackToWorldList()
     {

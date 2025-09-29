@@ -3,9 +3,10 @@ using VContainer;
 public class SimpleRoomNetworkController : WorldNetworkController
 {
     [Inject]
-    public SimpleRoomNetworkController(NetworkRunnerController runnerController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData)
+    public SimpleRoomNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData)
     {
         _runner = runnerController.Runner;
+        _respawnAreaController = respawnAreaController;
         _prefabDatabase = prefabDatabase;
         _worldDatabase = worldDatabase;
         _worldObjectFactory = worldObjectFactory;

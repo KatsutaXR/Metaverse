@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/Scenes/Worlds/SimpleRoom.unity
     guid: 76387155e3828db4a8df5e60c942673d
+  - enabled: 1
+    path: Assets/Project/Scenes/Worlds/Rooftop.unity
+    guid: 6c87ea97f768f3448a32f05151196f13
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1ff2cad17b5e1ab43ad77b69b0c7b0c5, type: 2}

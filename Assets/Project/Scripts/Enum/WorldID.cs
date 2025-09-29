@@ -4,4 +4,5 @@ public enum WorldID
     TestWorld = 1,
     NightBeach = 2,
     SimpleRoom = 3,
+    Rooftop = 4,
 }

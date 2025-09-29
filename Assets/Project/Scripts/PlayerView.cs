@@ -41,9 +41,8 @@ public class PlayerView : MonoBehaviour
         _toggleClientUIRequested.OnNext(Unit.Default);
     }
 
-    public void PlayerRespawn(Vector3 respawnPosition)
+    public void PlayerRespawn((Vector3, Quaternion) respawnData)
     {
-        Debug.Log($"PlayerRespawn:Position = {respawnPosition}");
-        _player.transform.position = respawnPosition;
+        _player.transform.SetPositionAndRotation(respawnData.Item1, respawnData.Item2);
     }
 }

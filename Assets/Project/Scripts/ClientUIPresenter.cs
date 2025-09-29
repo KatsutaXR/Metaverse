@@ -15,12 +15,12 @@ public class ClientUIPresenter : IDisposable
     private ClientUIModel _clientUIModel;
     private PlayerReferences _playerReferences;
     // Mediator経由のイベント
-    private readonly Subject<Vector3> _respawnButtonClicked = new Subject<Vector3>();
-    public IObservable<Vector3> RespawnButtonClicked => _respawnButtonClicked;
-    private readonly Subject<Unit> _worldButtonClicked = new Subject<Unit>();
-    public IObservable<Unit> WorldButtonClicked => _worldButtonClicked;
+    private readonly Subject<(Vector3, Quaternion)> _respawnButtonClicked = new Subject<(Vector3, Quaternion)>();
+    public IObservable<(Vector3, Quaternion)> RespawnButtonClicked => _respawnButtonClicked;
+    // private readonly Subject<Unit> _worldButtonClicked = new Subject<Unit>();
+    // public IObservable<Unit> WorldButtonClicked => _worldButtonClicked;
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
-    private readonly Subject<Unit> _backToMainMenuRequested = new Subject<Unit>();
+    // private readonly Subject<Unit> _backToMainMenuRequested = new Subject<Unit>();
     private CompositeDisposable _disposable;
 
     [Inject]
@@ -54,10 +54,10 @@ public class ClientUIPresenter : IDisposable
             .AddTo(_disposable);
         
         // ワールドボタン押下時
-        _clientUIView
-            .WorldButtonClicked
-            .Subscribe(_ => _worldButtonClicked.OnNext(Unit.Default))
-            .AddTo(_disposable);
+        // _clientUIView
+        //     .WorldButtonClicked
+        //     .Subscribe(_ => _worldButtonClicked.OnNext(Unit.Default))
+        //     .AddTo(_disposable);
 
         // ClientUIを切り替えるボタン(コントローラー)押下時
         _toggleClientUIRequested
@@ -69,9 +69,9 @@ public class ClientUIPresenter : IDisposable
             .AddTo(_disposable);
 
         // WorldUIのバックボタン押下時
-        _backToMainMenuRequested
-            .Subscribe(_ => _clientUIView.BackToMainMenu())
-            .AddTo(_disposable);
+        // _backToMainMenuRequested
+        //     .Subscribe(_ => _clientUIView.BackToMainMenu())
+        //     .AddTo(_disposable);
 
     }
 
@@ -80,10 +80,10 @@ public class ClientUIPresenter : IDisposable
         _toggleClientUIRequested.OnNext(Unit.Default);
     }
 
-    public void RequestBackToMainMenu()
-    {
-        _backToMainMenuRequested.OnNext(Unit.Default);
-    }
+    // public void RequestBackToMainMenu()
+    // {
+    //     _backToMainMenuRequested.OnNext(Unit.Default);
+    // }
 
     // 紐づいているLifetimeScopeの破棄と同時に呼ばれる
     public void Dispose()

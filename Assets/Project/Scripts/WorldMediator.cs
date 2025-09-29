@@ -13,18 +13,18 @@ public class WorldMediator : IDisposable, IStartable
     {
         _clientUIPresenter
             .RespawnButtonClicked
-            .Subscribe(respawnPosition => _playerPresenter.RequestRespawn(respawnPosition))
+            .Subscribe(respawnData => _playerPresenter.RequestRespawn(respawnData))
             .AddTo(_disposable);
 
-        _clientUIPresenter
-            .WorldButtonClicked
-            .Subscribe(_ => _worldUIPresenter.RequestNavigateToWorldUI())
-            .AddTo(_disposable);
+        // _clientUIPresenter
+        //     .WorldButtonClicked
+        //     .Subscribe(_ => _worldUIPresenter.RequestNavigateToWorldUI())
+        //     .AddTo(_disposable);
 
-        _worldUIPresenter
-            .WorldListBackButtonClicked
-            .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
-            .AddTo(_disposable);
+        // _worldUIPresenter
+        //     .WorldListBackButtonClicked
+        //     .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
+        //     .AddTo(_disposable);
 
         _playerPresenter
             .ToggleClientUIRequested

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fusion;
 using Fusion.Sockets;
+using Photon.Realtime;
 using UnityEngine;
 
 /// <summary>
@@ -13,6 +14,7 @@ using UnityEngine;
 public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposable
 {
     protected NetworkRunner _runner;
+    protected RespawnAreaController _respawnAreaController;
     protected PrefabDatabase _prefabDatabase;
     protected WorldDatabase _worldDatabase;
     protected WorldObjectFactory _worldObjectFactory;
@@ -28,6 +30,9 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         GameObject playerObject = _worldObjectFactory.CreatePlayer(_runner, _runner.LocalPlayer);
         _playerData.Player = playerObject;
         var playerReferences = playerObject.GetComponentInChildren<PlayerReferences>(true);
+
+        var playerOrigin = GameObject.FindWithTag("Player").transform;
+        _respawnAreaController.Initialize(playerOrigin, _worldObjectFactory.TargetWorldID);
 
         // 鏡の設定
         SetupMirror(playerReferences);
@@ -53,9 +58,9 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     {
         GameObject clientUI = _worldObjectFactory.CreateClientUI();
         _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
-        WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
-        worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
-        _worldUIPresenter.Initialize(worldUIView);
+        // WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
+        // worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
+        // _worldUIPresenter.Initialize(worldUIView);
     }
 
     protected void SetupStroke(PlayerRef player)

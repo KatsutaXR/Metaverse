@@ -10,7 +10,7 @@ public class ClientUIModel
         _useCase = useCase;
     }
 
-    public Vector3 Respawn()
+    public (Vector3, Quaternion) Respawn()
     {
         return _useCase.Respawn();
     }

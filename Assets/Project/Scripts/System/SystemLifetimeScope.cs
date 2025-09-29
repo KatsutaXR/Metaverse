@@ -7,6 +7,7 @@ using VContainer.Unity;
 public class SystemLifetimeScope : LifetimeScope
 {
     [SerializeField] private NetworkRunnerController _networkRunnerController;
+    [SerializeField] private RespawnAreaController _respawnAreaController;
     [SerializeField] private GlobalNonNativeKeyboard _keyboard;
     [SerializeField] private WorldDatabase _worldDatabase;
     [SerializeField] private PrefabDatabase _prefabDatabase;
@@ -17,6 +18,7 @@ public class SystemLifetimeScope : LifetimeScope
         builder.RegisterInstance(_prefabDatabase);
 
         builder.RegisterComponent(_networkRunnerController);
+        builder.RegisterComponent(_respawnAreaController);
         
         builder.Register<RecorderController>(Lifetime.Singleton);
         builder.Register<NetworkController>(Lifetime.Singleton);

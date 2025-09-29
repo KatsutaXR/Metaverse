@@ -8,19 +8,20 @@ public class PlayerPresenter : IDisposable
     private PlayerView _playerView;
     private PlayerModel _playerModel;
     private RecorderController _recorderController;
+    private RespawnAreaController _respawnAreaController;
 
     // Mediator経由のイベント
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
     public IObservable<Unit> ToggleClientUIRequested => _toggleClientUIRequested;
-    private readonly Subject<Vector3> _respawnButtonClicked = new Subject<Vector3>();
-    public IObservable<Vector3> RespawnButtonClicked => _respawnButtonClicked;
+    private readonly Subject<(Vector3, Quaternion)> _respawnButtonClicked = new Subject<(Vector3, Quaternion)>();
     private CompositeDisposable _disposable;
 
     [Inject]
-    public PlayerPresenter(PlayerModel playerModel, RecorderController recorderController)
+    public PlayerPresenter(PlayerModel playerModel, RecorderController recorderController, RespawnAreaController respawnAreaController)
     {
         _playerModel = playerModel;
         _recorderController = recorderController;
+        _respawnAreaController = respawnAreaController;
     }
 
 
@@ -43,15 +44,22 @@ public class PlayerPresenter : IDisposable
             })
             .AddTo(_disposable);
 
+        _respawnAreaController
+            .LimitYPositionReached
+            .Subscribe(respawnData => _playerView.PlayerRespawn(respawnData))
+            .AddTo(_disposable);
+
+        // 以下Mediator経由
+
         _respawnButtonClicked
-            .Subscribe(respawnPosition => _playerView.PlayerRespawn(respawnPosition))
+            .Subscribe(respawnData => _playerView.PlayerRespawn(respawnData))
             .AddTo(_disposable);
     }
 
     // Mediator経由でイベントを発火
-    public void RequestRespawn(Vector3 respawnPosition)
+    public void RequestRespawn((Vector3, Quaternion) respawnData)
     {
-        _respawnButtonClicked.OnNext(respawnPosition);
+        _respawnButtonClicked.OnNext(respawnData);
     }
 
     public void Dispose()
