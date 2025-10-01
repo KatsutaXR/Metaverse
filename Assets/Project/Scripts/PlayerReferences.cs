@@ -6,14 +6,16 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 /// </summary>
 public class PlayerReferences : MonoBehaviour
 {
-    [SerializeField] Transform _origin;
+    [SerializeField] private Transform _origin;
     public Transform Origin => _origin;
-    [SerializeField] Transform _camera;
+    [SerializeField] private Transform _camera;
     public Transform Camera => _camera;
-    [SerializeField] Transform _rightHand;
+    [SerializeField] private Transform _rightHand;
     public Transform RightHand => _rightHand;
-    [SerializeField] Transform _leftHand;
+    [SerializeField] private Transform _leftHand;
     public Transform LeftHand => _leftHand;
-    [SerializeField] XRBaseInteractor _rightNearFarInteractor;
+    [SerializeField] private XRBaseInteractor _rightNearFarInteractor;
     public XRBaseInteractor RightNearFarInteractor => _rightNearFarInteractor;
+    [SerializeField] private ProfileFilter _rightNearFarProfileFilter;
+    public ProfileFilter RightNearFarProfileFilter => _rightNearFarProfileFilter;
 }

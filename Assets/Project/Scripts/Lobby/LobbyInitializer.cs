@@ -13,21 +13,23 @@ public class LobbyInitializer : IStartable
     private PrefabDatabase _prefabDatabase;
     private WorldDatabase _worldDatabase;
     private ClientUIPresenter _clientUIPresenter;
+    private ClientUIModel _clientUIModel;
     private WorldUIPresenter _worldUIPresenter;
+    private ProfileUIPresenter _profileUIPresenter;
     private PlayerPresenter _playerPresenter;
-    private PlayerData _playerData;
     private GlobalNonNativeKeyboard _keyboard;
     private RespawnAreaController _respawnAreaController;
     [Inject]
-    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData, GlobalNonNativeKeyboard keyboard, RespawnAreaController respawnAreaController)
+    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData, GlobalNonNativeKeyboard keyboard, RespawnAreaController respawnAreaController)
     {
         _lobbyObjectFactory = lobbyObjectFactory;
         _prefabDatabase = prefabDatabase;
         _worldDatabase = worldDatabase;
         _clientUIPresenter = clientUIPresenter;
+        _clientUIModel = clientUIModel;
         _worldUIPresenter = worldUIPresenter;
+        _profileUIPresenter = profileUIPresenter;
         _playerPresenter = playerPresenter;
-        _playerData = playerData;
         _keyboard = keyboard;
         _respawnAreaController = respawnAreaController;
     }
@@ -35,33 +37,37 @@ public class LobbyInitializer : IStartable
     public void Start()
     {
         GameObject player = _lobbyObjectFactory.CreatePlayer();
-        _playerData.Player = player;
-        Transform playerCamera = GameObject.FindWithTag("MainCamera").transform;
+        var playerReferences = player.GetComponentInChildren<PlayerReferences>(true);
 
-        var playerOrigin = GameObject.FindWithTag("Player").transform;
-        _keyboard.playerRoot = playerOrigin;
-        _keyboard.cameraTransform = playerCamera;
+        _keyboard.playerRoot = playerReferences.Origin;
+        _keyboard.cameraTransform = playerReferences.Camera;
 
-        _respawnAreaController.Initialize(playerOrigin, WorldID.None);
-        
+        _respawnAreaController.Initialize(playerReferences.Origin, WorldID.None);
+
         GameObject[] mirrorObjects = GameObject.FindGameObjectsWithTag("Mirror");
         if (mirrorObjects.Length != 0)
         {
             foreach (var mirror in mirrorObjects)
             {
-                mirror.GetComponent<MirrorView>().PlayerCamera = playerCamera;
+                mirror.GetComponent<MirrorView>().PlayerCamera = playerReferences.Camera;
             }
         }
 
-        // todo:最初はSetActive = falseにする
         GameObject clientUI = _lobbyObjectFactory.CreateClientUI();
-        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), player.GetComponentInChildren<PlayerReferences>(true));
+        clientUI.SetActive(false);
+        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>());
+        _clientUIModel.Initialize(playerReferences.LeftHand);
 
-        WorldUIView worldUIView = GameObject.FindAnyObjectByType<WorldUIView>();
+        WorldUIView worldUIView = GameObject.FindAnyObjectByType<WorldUIView>(FindObjectsInactive.Include);
         worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
         _worldUIPresenter.Initialize(worldUIView);
 
+        ProfileUIView profileUIView = GameObject.FindAnyObjectByType<ProfileUIView>(FindObjectsInactive.Include);
+        _profileUIPresenter.Initialize(profileUIView);
+
         _playerPresenter.Initialize(player.GetComponentInChildren<PlayerView>(true));
+
+        playerReferences.RightNearFarProfileFilter.ClientUI = clientUI;
     }
 
 }

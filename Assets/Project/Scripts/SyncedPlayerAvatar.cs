@@ -35,6 +35,22 @@ public class SyncedPlayerAvatar : NetworkBehaviour
     [SerializeField] private Vector3 _fixRightPosition;
     [SerializeField] private Quaternion _fixRightRotation;
 
+    // Initializeはスポーンを行うクライアント下でのみ呼ばれる
+    public void Initialize(PlayerReferences playerReferences)
+    {
+        _targetOriginTransform = playerReferences.Origin;
+        _targetHeadTransform = playerReferences.Camera;
+        _targetRightHandTransform = playerReferences.RightHand;
+        _targetLeftHandTransform = playerReferences.LeftHand;
+
+        // ローカルでは腕だけ見えるようにする
+        foreach (Transform child in GetComponentsInChildren<Transform>(true))
+        {
+            child.gameObject.layer = 7; // InvisibleAvatar
+        }
+        _avatarHand.layer = 6; // VisibleAvatar
+    }
+
     private void OnEnable()
     {
         if (Object != null && Object.InputAuthority == Runner.LocalPlayer && !_isMoveActionRegisterd)
@@ -112,21 +128,6 @@ public class SyncedPlayerAvatar : NetworkBehaviour
         }
     }
 
-    public void Initialize(PlayerReferences playerReferences)
-    {
-        // todo:ロジックの最適化
-        _targetOriginTransform = playerReferences.Origin;
-        _targetHeadTransform = playerReferences.Camera;
-        _targetRightHandTransform = playerReferences.RightHand;
-        _targetLeftHandTransform = playerReferences.LeftHand;
-
-        // ローカルでは腕だけ見えるようにする
-        foreach (Transform child in GetComponentsInChildren<Transform>(true))
-        {
-            child.gameObject.layer = 7; // InvisibleAvatar
-        }
-        _avatarHand.layer = 6; // VisibleAvatar
-    }
 
     /// <summary>
     /// 各ローカル内でアニメーターの同期を行わせる

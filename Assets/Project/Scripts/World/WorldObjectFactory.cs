@@ -8,18 +8,24 @@ public abstract class WorldObjectFactory
     protected WorldDatabase _worldDatabase;
     public abstract WorldID TargetWorldID { get; }
 
-    public virtual GameObject CreatePlayer(NetworkRunner runner, PlayerRef playerRef)
+    public virtual GameObject CreatePlayer()
     {
         var worldData = _worldDatabase.GetWorldById(TargetWorldID);
         var spawnPosition = worldData.PlayerSpawnPosiion;
         var spawnRotation = worldData.PlayerSpawnRotation;
 
         GameObject player = Object.Instantiate(_prefabDatabase.PlayerPrefabForWorld, spawnPosition, spawnRotation);
+        return player;
+    }
+
+    public virtual NetworkObject CreateSyncedAvatar(NetworkRunner runner, PlayerRef playerRef)
+    {
+        var worldData = _worldDatabase.GetWorldById(TargetWorldID);
+        var spawnPosition = worldData.PlayerSpawnPosiion;
+        var spawnRotation = worldData.PlayerSpawnRotation;
 
         NetworkObject syncedAvatar = runner.Spawn(_prefabDatabase.SyncedPlayerPrefab, spawnPosition, spawnRotation, playerRef);
-        syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(player.GetComponentInChildren<PlayerReferences>(true));
-
-        return player;
+        return syncedAvatar;
     }
 
     public virtual GameObject CreateClientUI()

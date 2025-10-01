@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Mirror
+  - Profile
   layers:
   - Default
   - TransparentFX

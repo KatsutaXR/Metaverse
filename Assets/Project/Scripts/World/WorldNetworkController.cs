@@ -5,6 +5,7 @@ using Fusion;
 using Fusion.Sockets;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Samples.SpatialKeyboard;
 
 /// <summary>
 /// 各ワールド共通のネットワーク周りの処理を記載する
@@ -19,26 +20,36 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     protected WorldDatabase _worldDatabase;
     protected WorldObjectFactory _worldObjectFactory;
     protected ClientUIPresenter _clientUIPresenter;
-    protected PlayerPresenter _playerPresenter;
+    protected ClientUIModel _clientUIModel;
     protected WorldUIPresenter _worldUIPresenter;
-    protected PlayerData _playerData;
-
+    protected ProfileUIPresenter _profileUIPresenter;
+    protected PlayerPresenter _playerPresenter;
+    protected ProfileStorage _profileStorage;
+    protected GlobalNonNativeKeyboard _keyboard;
     public virtual void InitializeBase()
     {
         _runner.AddCallbacks(this);
 
-        GameObject playerObject = _worldObjectFactory.CreatePlayer(_runner, _runner.LocalPlayer);
-        _playerData.Player = playerObject;
+        GameObject playerObject = _worldObjectFactory.CreatePlayer();
         var playerReferences = playerObject.GetComponentInChildren<PlayerReferences>(true);
 
-        var playerOrigin = GameObject.FindWithTag("Player").transform;
-        _respawnAreaController.Initialize(playerOrigin, _worldObjectFactory.TargetWorldID);
+
+        _keyboard.playerRoot = playerReferences.Origin;
+        _keyboard.cameraTransform = playerReferences.Camera;
+        _respawnAreaController.Initialize(playerReferences.Origin, _worldObjectFactory.TargetWorldID);
 
         // 鏡の設定
         SetupMirror(playerReferences);
-        SetupClientUI(playerReferences);
+
+        NetworkObject syncedAvatar = _worldObjectFactory.CreateSyncedAvatar(_runner, _runner.LocalPlayer);
+        syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(playerReferences);
+        SyncPlayerProfile syncPlayerProfile = syncedAvatar.GetComponentInChildren<SyncPlayerProfile>(true);
+        syncPlayerProfile.Initialize(_profileStorage);
+        var clientUI = SetupClientUI(playerReferences, syncedAvatar.GetComponentInChildren<SyncPlayerProfile>(true));
 
         _playerPresenter.Initialize(playerObject.GetComponentInChildren<PlayerView>(true));
+
+        playerReferences.RightNearFarProfileFilter.ClientUI = clientUI;
     }
 
     protected void SetupMirror(PlayerReferences playerReferences)
@@ -53,11 +64,17 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         }
     }
 
-    // todo:最初は非活性にする
-    protected void SetupClientUI(PlayerReferences playerReferences)
+    protected GameObject SetupClientUI(PlayerReferences playerReferences, SyncPlayerProfile syncPlayerProfile)
     {
         GameObject clientUI = _worldObjectFactory.CreateClientUI();
-        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>(), playerReferences);
+        clientUI.SetActive(false);
+        _clientUIPresenter.Initialize(clientUI.GetComponent<ClientUIView>());
+        _clientUIModel.Initialize(playerReferences.LeftHand);
+
+        ProfileUIView profileUIView = GameObject.FindAnyObjectByType<ProfileUIView>(FindObjectsInactive.Include);
+        _profileUIPresenter.Initialize(profileUIView, syncPlayerProfile);
+
+        return clientUI;
         // WorldUIView worldUIView = clientUI.GetComponentInChildren<WorldUIView>(true);
         // worldUIView.CreateWorldListItems(_worldDatabase.Worlds.ToArray(), _prefabDatabase.WorldListItemPrefab);
         // _worldUIPresenter.Initialize(worldUIView);

@@ -13,6 +13,8 @@ public class PlayerPresenter : IDisposable
     // Mediator経由のイベント
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
     public IObservable<Unit> ToggleClientUIRequested => _toggleClientUIRequested;
+    private readonly Subject<ProfileData> _showTargetProfileRequested = new Subject<ProfileData>();
+    public IObservable<ProfileData> ShowTargetProfileRequested => _showTargetProfileRequested;
     private readonly Subject<(Vector3, Quaternion)> _respawnButtonClicked = new Subject<(Vector3, Quaternion)>();
     private CompositeDisposable _disposable;
 
@@ -35,6 +37,14 @@ public class PlayerPresenter : IDisposable
             .Subscribe(_ => _recorderController.SetMicActive())
             .AddTo(_disposable);
 
+
+        _respawnAreaController
+            .LimitYPositionReached
+            .Subscribe(respawnData => _playerView.PlayerRespawn(respawnData))
+            .AddTo(_disposable);
+
+        // 以下Mediator経由
+
         _playerView
             .ToggleClientUIRequested
             .Subscribe(_ =>
@@ -44,16 +54,15 @@ public class PlayerPresenter : IDisposable
             })
             .AddTo(_disposable);
 
-        _respawnAreaController
-            .LimitYPositionReached
-            .Subscribe(respawnData => _playerView.PlayerRespawn(respawnData))
+        _playerView
+            .ShowTargetProfileRequested
+            .Subscribe(profiledata => _showTargetProfileRequested.OnNext(profiledata))
             .AddTo(_disposable);
-
-        // 以下Mediator経由
 
         _respawnButtonClicked
             .Subscribe(respawnData => _playerView.PlayerRespawn(respawnData))
             .AddTo(_disposable);
+
     }
 
     // Mediator経由でイベントを発火

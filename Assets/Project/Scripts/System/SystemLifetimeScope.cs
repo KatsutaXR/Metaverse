@@ -1,4 +1,3 @@
-using Fusion;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.SpatialKeyboard;
 using VContainer;
@@ -23,6 +22,7 @@ public class SystemLifetimeScope : LifetimeScope
         builder.Register<RecorderController>(Lifetime.Singleton);
         builder.Register<NetworkController>(Lifetime.Singleton);
         builder.Register<SceneController>(Lifetime.Singleton);
+        builder.Register<ProfileStorage>(Lifetime.Singleton);
         builder.RegisterEntryPoint<GameLauncher>(Lifetime.Singleton);
     }
 }

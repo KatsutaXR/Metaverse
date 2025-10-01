@@ -13,14 +13,13 @@ public class ClientUIPresenter : IDisposable
     // Initializeで参照取得
     private ClientUIView _clientUIView;
     private ClientUIModel _clientUIModel;
-    private PlayerReferences _playerReferences;
     // Mediator経由のイベント
     private readonly Subject<(Vector3, Quaternion)> _respawnButtonClicked = new Subject<(Vector3, Quaternion)>();
     public IObservable<(Vector3, Quaternion)> RespawnButtonClicked => _respawnButtonClicked;
-    // private readonly Subject<Unit> _worldButtonClicked = new Subject<Unit>();
-    // public IObservable<Unit> WorldButtonClicked => _worldButtonClicked;
+    private readonly Subject<Unit> _profileButtonClicked = new Subject<Unit>();
+    public IObservable<Unit> ProfileButtonClicked => _profileButtonClicked;
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
-    // private readonly Subject<Unit> _backToMainMenuRequested = new Subject<Unit>();
+    private readonly Subject<Unit> _backToMainMenuRequested = new Subject<Unit>();
     private CompositeDisposable _disposable;
 
     [Inject]
@@ -30,10 +29,9 @@ public class ClientUIPresenter : IDisposable
         _networkController = networkController;
     }
 
-    public void Initialize(ClientUIView clientUIView, PlayerReferences playerReferences)
+    public void Initialize(ClientUIView clientUIView)
     {
         _clientUIView = clientUIView;
-        _playerReferences = playerReferences;
         _disposable = new CompositeDisposable();
 
         // todo:UIの位置をクライアントに合わせる
@@ -44,6 +42,13 @@ public class ClientUIPresenter : IDisposable
             .Subscribe(_ => _networkController.JoinLobbyAsync().Forget())
             .AddTo(_disposable);
 
+        _clientUIView
+            .UpdateTransformRequested
+            .Subscribe(_ =>
+            {
+                var clientUITransform = _clientUIModel.CorrectionClientUITransform();
+                _clientUIView.UpdateClientUiTransform(clientUITransform.Item1, clientUITransform.Item2);
+            });
 
         // 以下Mediator経由のイベント
 
@@ -53,25 +58,25 @@ public class ClientUIPresenter : IDisposable
             .Subscribe(_ => _respawnButtonClicked.OnNext(_clientUIModel.Respawn()))
             .AddTo(_disposable);
         
-        // ワールドボタン押下時
-        // _clientUIView
-        //     .WorldButtonClicked
-        //     .Subscribe(_ => _worldButtonClicked.OnNext(Unit.Default))
-        //     .AddTo(_disposable);
+        // プロフィールボタン押下時
+        _clientUIView
+            .ProfileButtonClicked
+            .Subscribe(_ => _profileButtonClicked.OnNext(Unit.Default))
+            .AddTo(_disposable);
 
         // ClientUIを切り替えるボタン(コントローラー)押下時
         _toggleClientUIRequested
             .Subscribe(_ =>
             {
-                (Vector3, Quaternion) clientUIInfo = _clientUIModel.CorrectionClientUITransform();
-                _clientUIView.ToggleClientUI(clientUIInfo.Item1, clientUIInfo.Item2);
+                var clientUITransform = _clientUIModel.CorrectionClientUITransform();
+                _clientUIView.ToggleClientUI(clientUITransform.Item1, clientUITransform.Item2);
             })
             .AddTo(_disposable);
 
-        // WorldUIのバックボタン押下時
-        // _backToMainMenuRequested
-        //     .Subscribe(_ => _clientUIView.BackToMainMenu())
-        //     .AddTo(_disposable);
+        // MainMenuに戻るBackButton押下時
+        _backToMainMenuRequested
+            .Subscribe(_ => _clientUIView.BackToMainMenu())
+            .AddTo(_disposable);
 
     }
 
@@ -80,10 +85,10 @@ public class ClientUIPresenter : IDisposable
         _toggleClientUIRequested.OnNext(Unit.Default);
     }
 
-    // public void RequestBackToMainMenu()
-    // {
-    //     _backToMainMenuRequested.OnNext(Unit.Default);
-    // }
+    public void RequestBackToMainMenu()
+    {
+        _backToMainMenuRequested.OnNext(Unit.Default);
+    }
 
     // 紐づいているLifetimeScopeの破棄と同時に呼ばれる
     public void Dispose()

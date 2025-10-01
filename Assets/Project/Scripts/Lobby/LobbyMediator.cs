@@ -8,13 +8,15 @@ public class LobbyMediator : IDisposable, IStartable
 {
     private ClientUIPresenter _clientUIPresenter;
     private WorldUIPresenter _worldUIPresenter;
+    private ProfileUIPresenter _profileUIPresenter;
     private PlayerPresenter _playerPresenter;
     private CompositeDisposable _disposable;
     [Inject]
-    public LobbyMediator(ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter)
+    public LobbyMediator(ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter)
     {
         _clientUIPresenter = clientUIPresenter;
         _worldUIPresenter = worldUIPresenter;
+        _profileUIPresenter = profileUIPresenter;
         _playerPresenter = playerPresenter;
         _disposable = new CompositeDisposable();
 
@@ -23,10 +25,15 @@ public class LobbyMediator : IDisposable, IStartable
             .Subscribe(respawnData => _playerPresenter.RequestRespawn(respawnData))
             .AddTo(_disposable);
 
-        // _clientUIPresenter
-        //     .WorldButtonClicked
-        //     .Subscribe(_ => _worldUIPresenter.RequestNavigateToWorldUI())
-        //     .AddTo(_disposable);
+        _profileUIPresenter
+            .MyProfileBackButtonClicked
+            .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
+            .AddTo(_disposable);
+
+        _clientUIPresenter
+            .ProfileButtonClicked
+            .Subscribe(_ => _profileUIPresenter.RequestNavigateToMyProfileUI())
+            .AddTo(_disposable);
 
         // _worldUIPresenter
         //     .WorldListBackButtonClicked

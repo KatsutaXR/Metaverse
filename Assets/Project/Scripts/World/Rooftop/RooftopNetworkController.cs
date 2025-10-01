@@ -1,9 +1,11 @@
+using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Samples.SpatialKeyboard;
 using VContainer;
 
 public class RooftopNetworkController : WorldNetworkController
 {
     [Inject]
-    public RooftopNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData)
+    public RooftopNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, ProfileStorage profileStorage, GlobalNonNativeKeyboard keyboard)
     {
         _runner = runnerController.Runner;
         _respawnAreaController = respawnAreaController;
@@ -11,9 +13,12 @@ public class RooftopNetworkController : WorldNetworkController
         _worldDatabase = worldDatabase;
         _worldObjectFactory = worldObjectFactory;
         _clientUIPresenter = clientUIPresenter;
+        _clientUIModel = clientUIModel;
         _worldUIPresenter = worldUIPresenter;
+        _profileUIPresenter = profileUIPresenter;
         _playerPresenter = playerPresenter;
-        _playerData = playerData;
+        _profileStorage = profileStorage;
+        _keyboard = keyboard;
     }
 
     /// <summary>

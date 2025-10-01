@@ -18,6 +18,10 @@ public class LobbyLifetimeScope : LifetimeScope
         builder.Register<WorldUIPresenter>(Lifetime.Scoped);
         builder.Register<WorldUIModel>(Lifetime.Scoped);
 
+        // ProfileUI
+        builder.Register<ProfileUIPresenter>(Lifetime.Scoped);
+        builder.Register<ProfileUIModel>(Lifetime.Scoped);
+
         // Player
         builder.Register<PlayerModel>(Lifetime.Scoped);
         builder.Register<PlayerPresenter>(Lifetime.Scoped);

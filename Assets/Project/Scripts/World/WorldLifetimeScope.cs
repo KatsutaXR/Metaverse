@@ -14,6 +14,8 @@ public abstract class WorldLifetimeScope : LifetimeScope
         builder.Register<ClientUIPresenter>(Lifetime.Scoped);
         builder.Register<WorldUIPresenter>(Lifetime.Scoped);
         builder.Register<WorldUIModel>(Lifetime.Scoped);
+        builder.Register<ProfileUIPresenter>(Lifetime.Scoped);
+        builder.Register<ProfileUIModel>(Lifetime.Scoped);
 
         builder.Register<PlayerModel>(Lifetime.Scoped);
         builder.Register<PlayerPresenter>(Lifetime.Scoped);
