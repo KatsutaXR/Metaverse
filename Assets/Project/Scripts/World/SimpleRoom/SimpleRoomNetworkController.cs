@@ -4,21 +4,8 @@ using VContainer;
 public class SimpleRoomNetworkController : WorldNetworkController
 {
     [Inject]
-    public SimpleRoomNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, ProfileStorage profileStorage, GlobalNonNativeKeyboard keyboard)
-    {
-        _runner = runnerController.Runner;
-        _respawnAreaController = respawnAreaController;
-        _prefabDatabase = prefabDatabase;
-        _worldDatabase = worldDatabase;
-        _worldObjectFactory = worldObjectFactory;
-        _clientUIPresenter = clientUIPresenter;
-        _clientUIModel = clientUIModel;
-        _worldUIPresenter = worldUIPresenter;
-        _profileUIPresenter = profileUIPresenter;
-        _playerPresenter = playerPresenter;
-        _profileStorage = profileStorage;
-        _keyboard = keyboard;
-    }
+    public SimpleRoomNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, ProfileStorage profileStorage, GlobalNonNativeKeyboard keyboard) :
+    base(runnerController, respawnAreaController, prefabDatabase, worldDatabase, worldObjectFactory, clientUIPresenter, clientUIModel, worldUIPresenter, profileUIPresenter, playerPresenter, profileStorage, keyboard) {}
 
     /// <summary>
     /// ワールド内の初期化処理を行う

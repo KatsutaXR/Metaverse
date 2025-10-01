@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Fusion;
 using Fusion.Sockets;
-using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.SpatialKeyboard;
 
@@ -26,6 +24,23 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     protected PlayerPresenter _playerPresenter;
     protected ProfileStorage _profileStorage;
     protected GlobalNonNativeKeyboard _keyboard;
+
+    protected WorldNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, ProfileStorage profileStorage, GlobalNonNativeKeyboard keyboard)
+    {
+        _runner = runnerController.Runner;
+        _respawnAreaController = respawnAreaController;
+        _prefabDatabase = prefabDatabase;
+        _worldDatabase = worldDatabase;
+        _worldObjectFactory = worldObjectFactory;
+        _clientUIPresenter = clientUIPresenter;
+        _clientUIModel = clientUIModel;
+        _worldUIPresenter = worldUIPresenter;
+        _profileUIPresenter = profileUIPresenter;
+        _playerPresenter = playerPresenter;
+        _profileStorage = profileStorage;
+        _keyboard = keyboard;
+    }
+
     public virtual void InitializeBase()
     {
         _runner.AddCallbacks(this);

@@ -34,8 +34,6 @@ public class ClientUIPresenter : IDisposable
         _clientUIView = clientUIView;
         _disposable = new CompositeDisposable();
 
-        // todo:UIの位置をクライアントに合わせる
-
         // ロビーに戻るボタン押下時
         _clientUIView
             .LobbyButtonClicked

@@ -1,6 +1,5 @@
 using VContainer;
 using VContainer.Unity;
-using UnityEngine;
 
 /// <summary>
 /// 各World共通の依存関係を定義する
@@ -19,7 +18,6 @@ public abstract class WorldLifetimeScope : LifetimeScope
 
         builder.Register<PlayerModel>(Lifetime.Scoped);
         builder.Register<PlayerPresenter>(Lifetime.Scoped);
-        builder.Register<PlayerData>(Lifetime.Scoped);
 
         // 各World固有の依存関係を注入する
         ConfigureWorldSpecificDependencies(builder);

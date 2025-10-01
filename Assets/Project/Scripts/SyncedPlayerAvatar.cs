@@ -109,7 +109,6 @@ public class SyncedPlayerAvatar : NetworkBehaviour
 
     public override void Render()
     {
-        // todo:アバターの動きを滑らかにする
         if (Object.InputAuthority == Runner.LocalPlayer)
         {
             _avatarOriginTransform.SetPositionAndRotation(_targetOriginTransform.position, _targetOriginTransform.rotation);

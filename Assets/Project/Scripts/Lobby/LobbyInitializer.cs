@@ -20,7 +20,7 @@ public class LobbyInitializer : IStartable
     private GlobalNonNativeKeyboard _keyboard;
     private RespawnAreaController _respawnAreaController;
     [Inject]
-    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, PlayerData playerData, GlobalNonNativeKeyboard keyboard, RespawnAreaController respawnAreaController)
+    public LobbyInitializer(LobbyObjectFactory lobbyObjectFactory, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter, GlobalNonNativeKeyboard keyboard, RespawnAreaController respawnAreaController)
     {
         _lobbyObjectFactory = lobbyObjectFactory;
         _prefabDatabase = prefabDatabase;

@@ -8,6 +8,13 @@ public abstract class WorldObjectFactory
     protected WorldDatabase _worldDatabase;
     public abstract WorldID TargetWorldID { get; }
 
+    protected WorldObjectFactory(PrefabDatabase prefabDatabase, NetworkController networkController, WorldDatabase worldDatabase)
+    {
+        _prefabDatabase = prefabDatabase;
+        _networkController = networkController;
+        _worldDatabase = worldDatabase;
+    }
+
     public virtual GameObject CreatePlayer()
     {
         var worldData = _worldDatabase.GetWorldById(TargetWorldID);

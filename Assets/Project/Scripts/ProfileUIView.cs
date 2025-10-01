@@ -50,7 +50,7 @@ public class ProfileUIView : MonoBehaviour
 
         _targetProfileBackButton
             .OnClickAsObservable()
-            .Subscribe(_ => CloseTargetProfileUI()) // todo:処理の記載
+            .Subscribe(_ => CloseTargetProfileUI())
             .AddTo(_disposable);
     }
 

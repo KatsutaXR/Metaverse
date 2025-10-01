@@ -1,3 +1,4 @@
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
@@ -12,6 +13,18 @@ public abstract class WorldInitializer : IStartable
     protected NetworkController _networkController;
     protected WorldDatabase _worldDatabase;
     public abstract WorldID TargetWorldID { get; }
+
+    protected WorldInitializer(WorldNetworkController worldNetworkController, NetworkController networkController, WorldDatabase worldDatabase)
+    {
+        _worldNetworkController = worldNetworkController;
+        _networkController = networkController;
+        _worldDatabase = worldDatabase;
+
+        _networkController
+            .LoadSceneCompleted
+            .Take(1)
+            .Subscribe(_ => Initialize());
+    }
 
     protected virtual void InitializeBase()
     {
@@ -28,6 +41,7 @@ public abstract class WorldInitializer : IStartable
 
         _worldNetworkController.Initialize();
     }
+    
     public virtual void Start() { }
 
     public abstract void Initialize();

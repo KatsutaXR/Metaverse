@@ -25,7 +25,5 @@ public class LobbyLifetimeScope : LifetimeScope
         // Player
         builder.Register<PlayerModel>(Lifetime.Scoped);
         builder.Register<PlayerPresenter>(Lifetime.Scoped);
-        builder.Register<PlayerData>(Lifetime.Scoped);
-
     }
 }
