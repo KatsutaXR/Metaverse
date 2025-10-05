@@ -28,6 +28,6 @@ public class SyncPlayerProfile : NetworkBehaviour
 
     private void OnNameChanged()
     {
-        _nameText.text = (string)Name;
+        _nameText.text = Name.ToString();
     }
 }

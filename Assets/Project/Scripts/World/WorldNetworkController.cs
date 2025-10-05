@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Fusion;
 using Fusion.Sockets;
 using UnityEngine;
@@ -57,6 +58,7 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         SetupMirror(playerReferences);
 
         NetworkObject syncedAvatar = _worldObjectFactory.CreateSyncedAvatar(_runner, _runner.LocalPlayer);
+        _runner.SetPlayerObject(_runner.LocalPlayer, syncedAvatar);
         syncedAvatar.GetComponentInChildren<SyncedPlayerAvatar>(true).Initialize(playerReferences);
         SyncPlayerProfile syncPlayerProfile = syncedAvatar.GetComponentInChildren<SyncPlayerProfile>(true);
         syncPlayerProfile.Initialize(_profileStorage);
@@ -97,23 +99,112 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
 
     protected void SetupStroke(PlayerRef player)
     {
-        var strokeManagers = GameObject.FindObjectsByType<StrokeController>(FindObjectsSortMode.None);
-        if (strokeManagers.Length != 0)
+        var controllers = GameObject.FindObjectsByType<StrokeController>(FindObjectsSortMode.None);
+        if (controllers.Length != 0)
         {
-            foreach (var manager in strokeManagers)
+            foreach (var controller in controllers)
             {
-                manager.SyncStrokes(player);
+                controller.SyncStrokes(player);
             }
         }
     }
 
+    protected async UniTask UpdateNumberOfPeopleInSession()
+    {
+        // マスタークライアントの変更を待つ
+        await UniTask.WaitForSeconds(1);
+        if (!_runner.IsSharedModeMasterClient) return;
+
+        var controllers = GameObject.FindObjectsByType<SessionInfoUIController>(FindObjectsSortMode.None);
+        if (controllers.Length != 0)
+        {
+            foreach (var controller in controllers)
+            {
+                controller.UpdateNumberOfPeople();
+            }
+        }
+    }
+    // protected void UpdateNumberOfPeopleInSession()
+    // {
+    //     if (!_runner.IsSharedModeMasterClient) return;
+
+    //     var controllers = GameObject.FindObjectsByType<SessionInfoUIController>(FindObjectsSortMode.None);
+    //     if (controllers.Length != 0)
+    //     {
+    //         foreach (var controller in controllers)
+    //         {
+    //             controller.UpdateNumberOfPeople();
+    //         }
+    //     }
+    // }
+
+    protected void SetupSessionInfoItem(PlayerRef targetPlayer)
+    {
+        // 重たい処理になる場合は状態権限を持つ各クライアントに任せる
+        if (!_runner.IsSharedModeMasterClient) return;
+
+        var controllers = GameObject.FindObjectsByType<SessionInfoItemController>(FindObjectsSortMode.None);
+        if (controllers.Length != 0)
+        {
+            foreach (var controller in controllers)
+            {
+                controller.RpcSyncSessionInfoItem(targetPlayer);
+            }
+        }
+    }
+
+    protected async UniTask RequestSpawnLeaveSessionInfoItem(PlayerRef targetPlayer)
+    {
+        // マスタークライアントの変更を待つ
+        await UniTask.WaitForSeconds(1);
+        if (!_runner.IsSharedModeMasterClient) return;
+
+        var controllers = GameObject.FindObjectsByType<SessionInfoUIController>(FindObjectsSortMode.None);
+        if (controllers.Length != 0)
+        {
+            foreach (var controller in controllers)
+            {
+                controller.SpawnLeaveSessionInfoItem(targetPlayer);
+            }
+        }
+    }
+    // protected void RequestSpawnLeaveSessionInfoItem(PlayerRef targetPlayer)
+    // {
+    //     if (!_runner.IsSharedModeMasterClient) return;
+
+    //     var controllers = GameObject.FindObjectsByType<SessionInfoUIController>(FindObjectsSortMode.None);
+    //     if (controllers.Length != 0)
+    //     {
+    //         foreach (var controller in controllers)
+    //         {
+    //             controller.SpawnLeaveSessionInfoItem(targetPlayer);
+    //         }
+    //     }
+    // }
+
     public virtual void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         SetupStroke(player);
+        UpdateNumberOfPeopleInSession().Forget();
+        // UpdateNumberOfPeopleInSession();
+        SetupSessionInfoItem(player);
     }
+
+    /// <summary>
+    /// マスタークライアントが退出した時はその変更を待ってから処理を行う必要がある
+    /// 強制終了などでは挙動がおかしくなるため一旦数秒待つことで対処する
+    /// </summary>
+    public virtual void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+    {
+        Debug.Log("OnPlayerLeft");
+        UpdateNumberOfPeopleInSession().Forget();
+        RequestSpawnLeaveSessionInfoItem(player).Forget();
+        // UpdateNumberOfPeopleInSession();
+        // RequestSpawnLeaveSessionInfoItem(player);
+    }
+
     public virtual void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public virtual void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
-    public virtual void OnPlayerLeft(NetworkRunner runner, PlayerRef player) { }
     public virtual void OnInput(NetworkRunner runner, NetworkInput input) { }
     public virtual void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
     public virtual void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }

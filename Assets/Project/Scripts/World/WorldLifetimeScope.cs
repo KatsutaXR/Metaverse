@@ -1,5 +1,6 @@
 using VContainer;
 using VContainer.Unity;
+using UnityEngine;
 
 /// <summary>
 /// 各World共通の依存関係を定義する
