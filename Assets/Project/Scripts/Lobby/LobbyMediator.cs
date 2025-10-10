@@ -7,16 +7,16 @@ using VContainer.Unity;
 public class LobbyMediator : IDisposable, IStartable
 {
     private ClientUIPresenter _clientUIPresenter;
-    private WorldUIPresenter _worldUIPresenter;
     private ProfileUIPresenter _profileUIPresenter;
+    private AvatarUIPresenter _avatarUIPresenter;
     private PlayerPresenter _playerPresenter;
     private CompositeDisposable _disposable;
     [Inject]
-    public LobbyMediator(ClientUIPresenter clientUIPresenter, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, PlayerPresenter playerPresenter)
+    public LobbyMediator(ClientUIPresenter clientUIPresenter, ProfileUIPresenter profileUIPresenter, AvatarUIPresenter avatarUIPresenter, PlayerPresenter playerPresenter)
     {
         _clientUIPresenter = clientUIPresenter;
-        _worldUIPresenter = worldUIPresenter;
         _profileUIPresenter = profileUIPresenter;
+        _avatarUIPresenter = avatarUIPresenter;
         _playerPresenter = playerPresenter;
         _disposable = new CompositeDisposable();
 
@@ -25,20 +25,25 @@ public class LobbyMediator : IDisposable, IStartable
             .Subscribe(respawnData => _playerPresenter.RequestRespawn(respawnData))
             .AddTo(_disposable);
 
-        _profileUIPresenter
-            .MyProfileBackButtonClicked
-            .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
-            .AddTo(_disposable);
-
         _clientUIPresenter
             .ProfileButtonClicked
             .Subscribe(_ => _profileUIPresenter.RequestNavigateToMyProfileUI())
             .AddTo(_disposable);
 
-        // _worldUIPresenter
-        //     .WorldListBackButtonClicked
-        //     .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
-        //     .AddTo(_disposable);
+        _clientUIPresenter
+            .AvatarButtonClicked
+            .Subscribe(_ => _avatarUIPresenter.RequestNavigateToAvatarListUI())
+            .AddTo(_disposable);
+
+        _profileUIPresenter
+            .MyProfileBackButtonClicked
+            .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
+            .AddTo(_disposable);
+
+        _avatarUIPresenter
+            .AvatarListBackButtonClicked
+            .Subscribe(_ => _clientUIPresenter.RequestBackToMainMenu())
+            .AddTo(_disposable);
 
         _playerPresenter
             .ToggleClientUIRequested

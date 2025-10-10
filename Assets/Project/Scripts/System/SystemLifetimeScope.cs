@@ -9,20 +9,24 @@ public class SystemLifetimeScope : LifetimeScope
     [SerializeField] private RespawnAreaController _respawnAreaController;
     [SerializeField] private GlobalNonNativeKeyboard _keyboard;
     [SerializeField] private WorldDatabase _worldDatabase;
+    [SerializeField] private AvatarDatabase _avatarDatabase;
     [SerializeField] private PrefabDatabase _prefabDatabase;
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterComponent(_keyboard);
         builder.RegisterInstance(_worldDatabase);
+        builder.RegisterInstance(_avatarDatabase);
         builder.RegisterInstance(_prefabDatabase);
 
         builder.RegisterComponent(_networkRunnerController);
         builder.RegisterComponent(_respawnAreaController);
-        
+
         builder.Register<RecorderController>(Lifetime.Singleton);
         builder.Register<NetworkController>(Lifetime.Singleton);
         builder.Register<SceneController>(Lifetime.Singleton);
         builder.Register<ProfileStorage>(Lifetime.Singleton);
+        builder.Register<AvatarStorage>(Lifetime.Singleton);
+        builder.Register<PlayerXRUtility>(Lifetime.Singleton);
         builder.RegisterEntryPoint<GameLauncher>(Lifetime.Singleton);
     }
 }

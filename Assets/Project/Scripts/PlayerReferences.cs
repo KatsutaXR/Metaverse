@@ -18,4 +18,7 @@ public class PlayerReferences : MonoBehaviour
     public XRBaseInteractor RightNearFarInteractor => _rightNearFarInteractor;
     [SerializeField] private ProfileFilter _rightNearFarProfileFilter;
     public ProfileFilter RightNearFarProfileFilter => _rightNearFarProfileFilter;
+    // lobby限定の参照
+    [SerializeField] private AvatarView _avatarView;
+    public AvatarView AvatarView => _avatarView;
 }

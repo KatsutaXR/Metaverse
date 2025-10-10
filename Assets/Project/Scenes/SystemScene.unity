@@ -156,6 +156,7 @@ MonoBehaviour:
   _respawnAreaController: {fileID: 1982297700}
   _keyboard: {fileID: 940664929}
   _worldDatabase: {fileID: 11400000, guid: 4cdc4ac336506d04eab6f467480dd60e, type: 2}
+  _avatarDatabase: {fileID: 11400000, guid: b33626e17bf338946bc03b97dcad0845, type: 2}
   _prefabDatabase: {fileID: 11400000, guid: 0b76baf7bf79f0242a82786fea249174, type: 2}
 --- !u!4 &931196373
 Transform:

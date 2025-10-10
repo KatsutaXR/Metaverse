@@ -9,36 +9,34 @@ public class ClientUIPresenter : IDisposable
 {
     // [Inject]で依存注入
     private NetworkController _networkController;
+    private PlayerXRUtility _playerXRUtility;
+    private ClientUIModel _clientUIModel;
 
     // Initializeで参照取得
     private ClientUIView _clientUIView;
-    private ClientUIModel _clientUIModel;
     // Mediator経由のイベント
     private readonly Subject<(Vector3, Quaternion)> _respawnButtonClicked = new Subject<(Vector3, Quaternion)>();
     public IObservable<(Vector3, Quaternion)> RespawnButtonClicked => _respawnButtonClicked;
     private readonly Subject<Unit> _profileButtonClicked = new Subject<Unit>();
     public IObservable<Unit> ProfileButtonClicked => _profileButtonClicked;
+    private readonly Subject<Unit> _avatarButtonClicked = new Subject<Unit>();
+    public IObservable<Unit> AvatarButtonClicked => _avatarButtonClicked;
     private readonly Subject<Unit> _toggleClientUIRequested = new Subject<Unit>();
     private readonly Subject<Unit> _backToMainMenuRequested = new Subject<Unit>();
     private CompositeDisposable _disposable;
 
     [Inject]
-    public ClientUIPresenter(ClientUIModel clientUIModel, NetworkController networkController)
+    public ClientUIPresenter(ClientUIModel clientUIModel, NetworkController networkController, PlayerXRUtility playerXRUtility)
     {
         _clientUIModel = clientUIModel;
         _networkController = networkController;
+        _playerXRUtility = playerXRUtility;
     }
 
     public void Initialize(ClientUIView clientUIView)
     {
         _clientUIView = clientUIView;
         _disposable = new CompositeDisposable();
-
-        // ロビーに戻るボタン押下時
-        _clientUIView
-            .LobbyButtonClicked
-            .Subscribe(_ => _networkController.JoinLobbyAsync().Forget())
-            .AddTo(_disposable);
 
         _clientUIView
             .UpdateTransformRequested
@@ -47,6 +45,17 @@ public class ClientUIPresenter : IDisposable
                 var clientUITransform = _clientUIModel.CorrectionClientUITransform();
                 _clientUIView.UpdateClientUiTransform(clientUITransform.Item1, clientUITransform.Item2);
             });
+        
+        // ロビーに戻るボタン押下時
+        _clientUIView
+            .LobbyButtonClicked
+            .Subscribe(_ => _networkController.JoinLobbyAsync().Forget())
+            .AddTo(_disposable);
+
+        _clientUIView
+            .RecenterButtonClicked
+            .Subscribe(_ => _playerXRUtility.Recenter())
+            .AddTo(_disposable);
 
         // 以下Mediator経由のイベント
 
@@ -60,6 +69,12 @@ public class ClientUIPresenter : IDisposable
         _clientUIView
             .ProfileButtonClicked
             .Subscribe(_ => _profileButtonClicked.OnNext(Unit.Default))
+            .AddTo(_disposable);
+
+        // アバターボタン押下時
+        _clientUIView
+            .AvatarButtonClicked
+            .Subscribe(_ => _avatarButtonClicked.OnNext(Unit.Default))
             .AddTo(_disposable);
 
         // ClientUIを切り替えるボタン(コントローラー)押下時

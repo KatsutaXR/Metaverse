@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed16a20b8499134488b685ee56fa26a, type: 3}
+  m_Name: PrefabDatabase
+  m_EditorClassIdentifier: 
+  _playerPrefabForLobby: {fileID: 5463612048895024576, guid: 7b8a658b039be0b4c909ab85cb661716, type: 3}
+  _playerPrefabForWorld: {fileID: 8226703413343849184, guid: 14988fa7e88004e4c9d9fa739b26a80a, type: 3}
+  _syncedAvatarPrefab: {fileID: 5643128218364199605, guid: d90b4fba0acf21e45a28b8826157eeb5, type: 3}
+  _syncPlayerRootPrefab: {fileID: 5643128218364199605, guid: 0a790cefacea1174ba73e0802e8ff2ce, type: 3}
+  _clientUIPrefab: {fileID: 2668970450738262420, guid: 1f0619516b37c8442a17054b4874e578, type: 3}
+  _worldListItemPrefab: {fileID: 590638277997991642, guid: 8ada8d4a607369643890ba05eff7148d, type: 3}
+  _avatarListItemPrefab: {fileID: 590638277997991642, guid: 31bc323e5f5baa44eb6957482f76aaa1, type: 3}
+  _sessionItemPrefab: {fileID: 3803831517798125664, guid: 4858006b77c294748bd635f4717ee800, type: 3}
+  _sessionInfoItemPrefab: {fileID: 3115061073195629787, guid: 6880df55ad6de454788de9fd3cfcd828, type: 3}
+  _networkRunnerPrefab: {fileID: 4900965740788428791, guid: eeb7cef0462d1224688eedef705e19b9, type: 3}

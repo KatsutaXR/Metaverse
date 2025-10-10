@@ -25,14 +25,14 @@ public abstract class WorldObjectFactory
         return player;
     }
 
-    public virtual NetworkObject CreateSyncedAvatar(NetworkRunner runner, PlayerRef playerRef)
+    public virtual NetworkObject CreateSyncPlayerRoot(NetworkRunner runner, PlayerRef playerRef)
     {
         var worldData = _worldDatabase.GetWorldById(TargetWorldID);
         var spawnPosition = worldData.PlayerSpawnPosiion;
         var spawnRotation = worldData.PlayerSpawnRotation;
 
-        NetworkObject syncedAvatar = runner.Spawn(_prefabDatabase.SyncedPlayerPrefab, spawnPosition, spawnRotation, playerRef);
-        return syncedAvatar;
+        NetworkObject syncPlayerRoot = runner.Spawn(_prefabDatabase.SyncPlayerRootPrefab, spawnPosition, spawnRotation, playerRef);
+        return syncPlayerRoot;
     }
 
     public virtual GameObject CreateClientUI()

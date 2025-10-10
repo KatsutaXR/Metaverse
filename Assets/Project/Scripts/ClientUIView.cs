@@ -11,6 +11,7 @@ public class ClientUIView : MonoBehaviour
     [SerializeField] private Button _profileButton;
     [SerializeField] private Button _avatarButton;
     [SerializeField] private Button _respawnButton;
+    [SerializeField] private Button _recenterButton;
     private readonly Subject<Unit> _lobbyButtonClicked = new Subject<Unit>();
     public IObservable<Unit> LobbyButtonClicked => _lobbyButtonClicked;
     private readonly Subject<Unit> _profileButtonClicked = new Subject<Unit>();
@@ -19,11 +20,13 @@ public class ClientUIView : MonoBehaviour
     public IObservable<Unit> AvatarButtonClicked => _avatarButtonClicked;
     private readonly Subject<Unit> _respawnButtonClicked = new Subject<Unit>();
     public IObservable<Unit> RespawnButtonClicked => _respawnButtonClicked;
+    private readonly Subject<Unit> _recenterButtonClicked = new Subject<Unit>();
+    public IObservable<Unit> RecenterButtonClicked => _recenterButtonClicked;
     private readonly Subject<Unit> _updateTransformRequested = new Subject<Unit>();
     public IObservable<Unit> UpdateTransformRequested => _updateTransformRequested;
 
     private CompositeDisposable _disposable;
-    private void Update()
+    private void LateUpdate()
     {
         if (!_clientUI.activeSelf) return;
 
@@ -49,12 +52,21 @@ public class ClientUIView : MonoBehaviour
 
         _avatarButton
             .OnClickAsObservable()
-            .Subscribe(_ => _avatarButtonClicked.OnNext(Unit.Default))
+            .Subscribe(_ =>
+            {
+                _mainMenu.SetActive(false);
+                _avatarButtonClicked.OnNext(Unit.Default);
+            })
             .AddTo(_disposable);
 
         _respawnButton
             .OnClickAsObservable()
             .Subscribe(_ => _respawnButtonClicked.OnNext(Unit.Default))
+            .AddTo(_disposable);
+
+        _recenterButton
+            .OnClickAsObservable()
+            .Subscribe(_ => _recenterButtonClicked.OnNext(Unit.Default))
             .AddTo(_disposable);
     }
 
