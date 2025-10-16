@@ -143,6 +143,19 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         }
     }
 
+    protected void SetupPhotoDisplay(PlayerRef targetPlayer)
+    {
+        var controllers = GameObject.FindObjectsByType<PhotoDisplayController>(FindObjectsSortMode.None);
+        if (controllers.Length != 0)
+        {
+            foreach (var controller in controllers)
+            {
+                Debug.Log("SetupPhotoDisplay");
+                controller.SyncPhoto(targetPlayer);
+            }
+        }
+    }
+
     protected async UniTask UpdateNumberOfPeopleInSession()
     {
         // マスタークライアントの変更を待つ
@@ -194,6 +207,7 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     {
         SetupStroke(player);
         SetupAvatar(player);
+        SetupPhotoDisplay(player);
         UpdateNumberOfPeopleInSession().Forget();
         SetupSessionInfoItem(player);
     }
@@ -209,6 +223,20 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         RequestSpawnLeaveSessionInfoItem(player).Forget();
     }
 
+    /// <summary>
+    /// Runner.SendReliableDataToPlayerのデータがすべて届いたときに呼ばれる関数
+    /// todo:写真の同期以外で使う場合はロジックを変更する必要あり
+    /// </summary>
+    public virtual void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
+    {
+        key.GetInts(out int key0, out _, out _, out _);
+        NetworkId networkId = new NetworkId();
+        networkId.Raw = (uint)key0;
+        NetworkObject obj = _runner.FindObject(networkId);
+        if (obj == null) return;
+        obj.GetComponent<PhotoDisplayController>().ApplyTextureFromBytes(data.ToArray());
+    }
+
     public virtual void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public virtual void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player) { }
     public virtual void OnInput(NetworkRunner runner, NetworkInput input) { }
@@ -222,7 +250,6 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     public virtual void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
     public virtual void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
     public virtual void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
-    public virtual void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data) { }
     public virtual void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress) { }
     public virtual void OnSceneLoadDone(NetworkRunner runner) { }
     public virtual void OnSceneLoadStart(NetworkRunner runner) { }

@@ -52,10 +52,6 @@ public class StrokeController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RpcSyncStrokes([RpcTarget] PlayerRef targetPlayer, int strokeId, byte[] compressedPoints)
     {
-        // var decompressedPoints = DecompressPoints(compressedPoints);
-        // _strokePoints[strokeId] = decompressedPoints;
-        // _activeStrokes[strokeId] = CreateStroke(decompressedPoints);
-
         var decompressedPoints = DecompressPoints(compressedPoints);
 
         if (_strokePoints.ContainsKey(strokeId)) _strokePoints[strokeId].AddRange(decompressedPoints);

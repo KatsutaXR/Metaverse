@@ -19,6 +19,9 @@ public class SessionInfoItemController : NetworkBehaviour
     [Networked] public double SimulationTime { get; set; }
     private bool _parentSet = false;
 
+    /// <summary>
+    /// 後から参加したプレイヤーに同期させる関数
+    /// </summary>
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RpcSyncSessionInfoItem([RpcTarget] PlayerRef targetPlayer)
     {
@@ -43,6 +46,10 @@ public class SessionInfoItemController : NetworkBehaviour
         WaitForParentAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
+    /// <summary>
+    /// 参加時にセッション情報を設定する関数
+    /// Rpcで他のクライアントにも同期させる
+    /// </summary>
     public void SetupSessionInfoItem(SessionInfoType type, string playerName, NetworkId parentId)
     {
         DateTime dt = DateTime.Now;
@@ -81,6 +88,10 @@ public class SessionInfoItemController : NetworkBehaviour
         WaitForParentAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
+    /// <summary>
+    /// 特定のオブジェクトの子供として設定するための関数
+    /// 親をネットワークオブジェクトとしているため、親の同期が完了してオブジェクトが見つかるのを待つ
+    /// </summary>
     private async UniTask WaitForParentAsync(CancellationToken token)
     {
         while (!_parentSet && !token.IsCancellationRequested)

@@ -87,6 +87,7 @@ public class SessionInfoUIController : NetworkBehaviour
         Debug.Log("SpawnLeaveSerssionInfoItem");
         var obj = Runner.Spawn(_prefabDatabase.SessionInfoItemPrefab);
         var playerName = PlayerNames[targetPlayer];
+        PlayerNames.Remove(targetPlayer);
         obj.GetComponent<SessionInfoItemController>().SetupSessionInfoItem(SessionInfoType.Leave, playerName.ToString(), _sessionInfoContent.Id);
     }
 

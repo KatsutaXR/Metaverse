@@ -350,9 +350,10 @@ GameObject:
   - component: {fileID: 3802415362137768034}
   - component: {fileID: 1983788318636858758}
   - component: {fileID: 727713967991241742}
-  - component: {fileID: 3832671670526811870}
   - component: {fileID: 3923309602747120320}
   - component: {fileID: 4146730427246726747}
+  - component: {fileID: 7579564499280696517}
+  - component: {fileID: 3832671670526811870}
   m_Layer: 0
   m_Name: BlackPen
   m_TagString: Untagged
@@ -613,23 +614,6 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 1
---- !u!114 &3832671670526811870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5517764312480739706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6d3745d5e9ce147bd3238aa2b7e98b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _tip: {fileID: 4648378038428069536}
-  _drawActionRef: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  _clearButton: {fileID: 8744858963618604713}
-  _segmentLength: 0.001
-  _strokeController: {fileID: 7967406899544179751}
 --- !u!114 &3923309602747120320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,8 +631,9 @@ MonoBehaviour:
   Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 3832671670526811870}
   - {fileID: 4146730427246726747}
+  - {fileID: 7579564499280696517}
+  - {fileID: 3832671670526811870}
   - {fileID: 7967406899544179751}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &4146730427246726747
@@ -668,6 +653,36 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &7579564499280696517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5517764312480739706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e8778158deed6545a10a6e26614461c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3832671670526811870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5517764312480739706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a6d3745d5e9ce147bd3238aa2b7e98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tip: {fileID: 4648378038428069536}
+  _drawActionRef: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _clearButton: {fileID: 8744858963618604713}
+  _segmentLength: 0.001
+  _strokeController: {fileID: 7967406899544179751}
+  _networkObjectGrabController: {fileID: 7579564499280696517}
 --- !u!1 &6750902214348968536
 GameObject:
   m_ObjectHideFlags: 0

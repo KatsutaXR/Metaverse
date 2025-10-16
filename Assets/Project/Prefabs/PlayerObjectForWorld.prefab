@@ -829,6 +829,7 @@ MonoBehaviour:
   _leftHand: {fileID: 174971697020474424}
   _rightNearFarInteractor: {fileID: 8623399612159230787}
   _rightNearFarProfileFilter: {fileID: 7995795154077488535}
+  _avatarView: {fileID: 0}
 --- !u!114 &6097628724906625276
 MonoBehaviour:
   m_ObjectHideFlags: 0

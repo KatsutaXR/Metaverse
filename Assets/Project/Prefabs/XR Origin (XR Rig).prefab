@@ -169,6 +169,8 @@ MonoBehaviour:
   _rightHand: {fileID: 7512633816001971338}
   _leftHand: {fileID: 2143265427990031522}
   _rightNearFarInteractor: {fileID: 0}
+  _rightNearFarProfileFilter: {fileID: 0}
+  _avatarView: {fileID: 0}
 --- !u!114 &3562152529375189126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +187,7 @@ MonoBehaviour:
   _jumpAction: {fileID: 0}
   _setMicActiveAction: {fileID: 0}
   _player: {fileID: 939697962085786333}
+  _rightNearFarInteractor: {fileID: 0}
 --- !u!1 &1014167706688623347
 GameObject:
   m_ObjectHideFlags: 0

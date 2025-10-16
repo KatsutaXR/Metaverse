@@ -7,8 +7,6 @@ public class PrefabDatabase : ScriptableObject
     public GameObject PlayerPrefabForLobby => _playerPrefabForLobby;
     [SerializeField] private GameObject _playerPrefabForWorld;
     public GameObject PlayerPrefabForWorld => _playerPrefabForWorld;
-    [SerializeField] private GameObject _syncedAvatarPrefab;
-    public GameObject SyncedPlayerPrefab => _syncedAvatarPrefab;
     [SerializeField] private GameObject _syncPlayerRootPrefab;
     public GameObject SyncPlayerRootPrefab => _syncPlayerRootPrefab;
     [SerializeField] private GameObject _clientUIPrefab;

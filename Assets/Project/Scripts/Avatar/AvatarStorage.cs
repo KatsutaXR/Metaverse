@@ -16,7 +16,7 @@ public class AvatarStorage
 
     public AvatarID Load()
     {
-        if (!System.IO.File.Exists(_path)) return new AvatarID();
+        if (!System.IO.File.Exists(_path)) return AvatarID.Boss;
         var json = System.IO.File.ReadAllText(_path);
         return JsonUtility.FromJson<AvatarID>(json);
     }

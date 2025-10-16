@@ -2,7 +2,6 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class PenController : NetworkBehaviour
 {
@@ -11,17 +10,15 @@ public class PenController : NetworkBehaviour
     [SerializeField] private Button _clearButton;
     [SerializeField] private float _segmentLength = 0.01f;
     [SerializeField] private StrokeController _strokeController;
+    [SerializeField] private NetworkObjectGrabController _networkObjectGrabController;
 
     private bool _isDrawing;
     private Vector3 _lastPos;
-    private XRBaseInteractor _xrBaseinteractor;
 
     public override void Spawned()
     {
         _clearButton.onClick.AddListener(RequestDeleteStrokes);
         _isDrawing = false;
-
-        if (Runner.IsSharedModeMasterClient) Object.ReleaseStateAuthority();
 
         _drawActionRef.action.Enable();
         _drawActionRef.action.canceled += OnDrawCanceled;
@@ -29,22 +26,8 @@ public class PenController : NetworkBehaviour
 
     public override void Render()
     {
-        if (_xrBaseinteractor == null)
-        {
-            _xrBaseinteractor = FindFirstObjectByType<PlayerReferences>()?.RightNearFarInteractor;
-            if (_xrBaseinteractor == null) return;
-        }
 
-        if (_xrBaseinteractor.firstInteractableSelected == null) return;
-
-        var grabbed = _xrBaseinteractor.firstInteractableSelected?.transform.gameObject;
-        if (grabbed != gameObject) return;
-
-        if (!HasStateAuthority)
-        {
-            Debug.Log("!HasStateAuthority");
-            Object.RequestStateAuthority();
-        }
+        if (!Object.HasStateAuthority || !_networkObjectGrabController.IsGrabbingThisObj) return;
 
         if (_drawActionRef.action.IsPressed())
         {
