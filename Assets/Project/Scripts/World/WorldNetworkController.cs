@@ -27,11 +27,13 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     protected ProfileUIPresenter _profileUIPresenter;
     protected AvatarUIPresenter _avatarUIPresenter;
     protected PlayerPresenter _playerPresenter;
+    protected VideoPresenter _videoPresenter;
+    protected VideoModel _videoModel;
     protected ProfileStorage _profileStorage;
     protected PlayerXRUtility _playerXRUtility;
     protected GlobalNonNativeKeyboard _keyboard;
 
-    protected WorldNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, AvatarDatabase avatarDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, AvatarUIPresenter avatarUIPresenter, PlayerPresenter playerPresenter, ProfileStorage profileStorage, PlayerXRUtility playerXRUtility, GlobalNonNativeKeyboard keyboard)
+    protected WorldNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, AvatarDatabase avatarDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, AvatarUIPresenter avatarUIPresenter, PlayerPresenter playerPresenter, VideoPresenter videoPresenter, VideoModel videoModel, ProfileStorage profileStorage, PlayerXRUtility playerXRUtility, GlobalNonNativeKeyboard keyboard)
     {
         _runner = runnerController.Runner;
         _respawnAreaController = respawnAreaController;
@@ -45,6 +47,8 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         _profileUIPresenter = profileUIPresenter;
         _avatarUIPresenter = avatarUIPresenter;
         _playerPresenter = playerPresenter;
+        _videoPresenter = videoPresenter;
+        _videoModel = videoModel;
         _profileStorage = profileStorage;
         _playerXRUtility = playerXRUtility;
         _keyboard = keyboard;
@@ -65,7 +69,9 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
         // 鏡の設定
         SetupMirror(playerReferences);
 
-        // World特有処理
+        // 以下World特有処理
+        SetupVideo();
+
         NetworkObject syncPlayerRootObj = _worldObjectFactory.CreateSyncPlayerRoot(_runner, _runner.LocalPlayer);
         _runner.SetPlayerObject(_runner.LocalPlayer, syncPlayerRootObj);
         SyncPlayerRoot syncPlayerRoot = syncPlayerRootObj.GetComponent<SyncPlayerRoot>();
@@ -92,6 +98,22 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
             {
                 mirror.PlayerCamera = playerReferences.Camera;
             }
+        }
+    }
+
+    /// <summary>
+    /// 動画再生機能の初期化
+    /// 今は動画再生オブジェクトは一つまでとして作成、複数の場合はその数だけModelとViewを作る必要あり
+    /// </summary>
+    protected void SetupVideo()
+    {
+        VideoView videoView = GameObject.FindAnyObjectByType<VideoView>(FindObjectsInactive.Include);
+        if (videoView != null)
+        {
+            // 先にModelの初期化で動画を読み込んでおく必要がある
+            _videoModel.Initialize();
+            videoView.Initialize(_videoModel.Playlist, _prefabDatabase.PlaylistItemPrefab);
+            _videoPresenter.Initialize(videoView);
         }
     }
 

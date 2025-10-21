@@ -34,7 +34,6 @@ public class SessionInfoUIController : NetworkBehaviour
         _sessionStartTime.text = SessionStartTime.ToString();
         _numberOfPeople.text = NumberOfPeople.ToString();
 
-        // todo:sessionInfoPrefabを生成し、各項目を設定して同期する
         var obj = Runner.Spawn(_prefabDatabase.SessionInfoItemPrefab);
         var playerName = _profileStorage.LoadName();
         obj.GetComponent<SessionInfoItemController>().SetupSessionInfoItem(SessionInfoType.Join, playerName, _sessionInfoContent.Id);

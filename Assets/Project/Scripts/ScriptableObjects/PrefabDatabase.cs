@@ -19,6 +19,8 @@ public class PrefabDatabase : ScriptableObject
     public GameObject SessionItemPrefab => _sessionItemPrefab;
     [SerializeField] private GameObject _sessionInfoItemPrefab;
     public GameObject SessionInfoItemPrefab => _sessionInfoItemPrefab;
+    [SerializeField] private GameObject _playlistItemPrefab;
+    public GameObject PlaylistItemPrefab => _playlistItemPrefab;
     [SerializeField] private GameObject _networkRunnerPrefab;
     public GameObject NetworkRunnerPrefab => _networkRunnerPrefab;
 

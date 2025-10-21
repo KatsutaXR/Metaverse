@@ -21,6 +21,11 @@ public abstract class WorldLifetimeScope : LifetimeScope
         builder.Register<PlayerModel>(Lifetime.Scoped);
         builder.Register<PlayerPresenter>(Lifetime.Scoped);
 
+        builder.Register<VideoModel>(Lifetime.Scoped);
+        builder.Register<VideoPresenter>(Lifetime.Scoped);
+
+        builder.Register<NetworkSpawnEventStream>(Lifetime.Scoped);
+
         // 各World固有の依存関係を注入する
         ConfigureWorldSpecificDependencies(builder);
     }
