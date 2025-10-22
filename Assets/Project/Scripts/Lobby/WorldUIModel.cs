@@ -32,7 +32,8 @@ public class WorldUIModel : IDisposable
     public CustomSessionInfo PrepareJoinSessionInfo(CustomSessionInfo customSessionInfo)
     {
         customSessionInfo.WorldID = TargetWorldID;
-        customSessionInfo.SessionName = TargetSessionInfo.Name;
+        customSessionInfo.DisplaySessionName = (string)TargetSessionInfo.Properties[$"{NetworkController.DISPLAY_SESSION_NAME_KEY}"];
+
         return customSessionInfo;
     }
 

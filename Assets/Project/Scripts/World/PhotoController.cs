@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Fusion;
 using UnityEngine;
@@ -12,7 +11,7 @@ public class PhotoController : NetworkBehaviour
     [SerializeField] private Camera _captureCamera;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private NetworkObjectGrabController _networkObjectGrabController;
-    [Networked, Capacity(16)] public NetworkLinkedList<NetworkId> PhotoDisplayIDs => default; 
+    [Networked, Capacity(16)] public NetworkLinkedList<NetworkId> PhotoDisplayIDs => default;
 
     public override void Spawned()
     {
@@ -20,6 +19,12 @@ public class PhotoController : NetworkBehaviour
         _photoActionRef.action.performed += OnTakePhotoPerformed;
     }
 
+    private void OnDisable()
+    {
+        _photoActionRef.action.performed -= OnTakePhotoPerformed;
+    }
+    
+    // 退出時にaction.perfomedから外さないとずっと購読されてしまう
     private void OnTakePhotoPerformed(InputAction.CallbackContext context)
     {
         if (!Object.HasStateAuthority || !_networkObjectGrabController.IsGrabbingThisObj) return;

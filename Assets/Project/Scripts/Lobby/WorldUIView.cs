@@ -64,7 +64,7 @@ public class WorldUIView : MonoBehaviour
             .Subscribe(_ =>
             {
                 CustomSessionInfo customSessionInfo = new CustomSessionInfo();
-                customSessionInfo.SessionName = _createSessionName.text;
+                customSessionInfo.DisplaySessionName = _createSessionName.text;
                 customSessionInfo.Password = _createSessionPassword.text;
                 _createSessionRequested.OnNext(customSessionInfo);
             })
@@ -139,7 +139,7 @@ public class WorldUIView : MonoBehaviour
         foreach (var sessionInfo in sessionInfos)
         {
             GameObject obj = Instantiate(sessionItemPrefab, _worldDetailScrollViewContent);
-            obj.transform.Find("SessionName").GetComponent<TextMeshProUGUI>().text = sessionInfo.Name;
+            obj.transform.Find("SessionName").GetComponent<TextMeshProUGUI>().text = (string)sessionInfo.Properties[$"{NetworkController.DISPLAY_SESSION_NAME_KEY}"];
             obj.transform.Find("NumberOfPeople").GetComponent<TextMeshProUGUI>().text = $"{sessionInfo.PlayerCount} / {sessionInfo.MaxPlayers}";
             obj.GetComponent<Button>().onClick.AddListener(() => OnSessionItemClicked(sessionInfo));
             _sessionItems.Add(obj);
@@ -148,7 +148,6 @@ public class WorldUIView : MonoBehaviour
 
     private void OnSessionItemClicked(SessionInfo sessionInfo)
     {
-        Debug.Log($"Name = {sessionInfo.Name}, WorldID = {sessionInfo.Properties["WorldID"]}, Password = {sessionInfo.Properties["Password"]}");
         _sessionItemClicked.OnNext(sessionInfo);
         _joinSessionButton.interactable = true;
     }

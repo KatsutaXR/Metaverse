@@ -15,6 +15,7 @@ public class NetworkController : INetworkRunnerCallbacks
 {
     public const string WORLD_ID_KEY = "WorldID";
     public const string PASSWORD_KEY = "Password";
+    public const string DISPLAY_SESSION_NAME_KEY = "DisplaySessionName";
     private readonly NetworkRunnerController _networkRunnerController;
     private readonly SceneController _sceneController;
     private readonly Subject<Unit> _loadSceneCompleted = new Subject<Unit>();
@@ -58,13 +59,11 @@ public class NetworkController : INetworkRunnerCallbacks
             _networkRunnerController.Runner.AddCallbacks(this);
         }
         
-
         await _sceneController.LoadLobbyAsync();
         await _networkRunnerController.JoinLSessionLobbyAsync();
 
         _isLobbyScene = true;
         _currentWorldID = WorldID.None;
-
     }
 
     public async UniTask CreateSessionAsync(CustomSessionInfo customSessionInfo)
@@ -72,11 +71,13 @@ public class NetworkController : INetworkRunnerCallbacks
         // セッション名とWorldIDが一致するものがあればエラーUIにその旨を表示して終了
         foreach (var sessionInfo in _sessionList)
         {
-            if (sessionInfo.Name != customSessionInfo.SessionName) continue;
-
             if (!sessionInfo.Properties.TryGetValue(WORLD_ID_KEY, out var sessionProperty)) continue;
             if (sessionProperty.PropertyType != typeof(int)) continue;
             if ((WorldID)sessionProperty.PropertyValue != customSessionInfo.WorldID) continue;
+
+            if (!sessionInfo.Properties.TryGetValue(DISPLAY_SESSION_NAME_KEY, out var displaySessionName)) continue;
+            if (displaySessionName.PropertyType != typeof(string)) continue;
+            if ((string)displaySessionName.PropertyValue != customSessionInfo.DisplaySessionName) continue;
 
             // todo:エラーを表示させる
             return;
@@ -87,11 +88,13 @@ public class NetworkController : INetworkRunnerCallbacks
         await _networkRunnerController.StartSessionAsync(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = customSessionInfo.SessionName,
+            // SessionNameで参加するセッションが決まるため一意なものとする
+            SessionName = Guid.NewGuid().ToString(),
             PlayerCount = customSessionInfo.MaxPlayers,
             SessionProperties = new Dictionary<string, SessionProperty>
             {
                 {WORLD_ID_KEY, (int)customSessionInfo.WorldID},
+                {DISPLAY_SESSION_NAME_KEY, customSessionInfo.DisplaySessionName},
                 {PASSWORD_KEY, customSessionInfo.Password}
             }
         });
@@ -110,11 +113,13 @@ public class NetworkController : INetworkRunnerCallbacks
         SessionInfo targetSessionInfo = null;
         foreach (var sessionInfo in _sessionList)
         {
-            if (sessionInfo.Name != customSessionInfo.SessionName) continue;
-
             if (!sessionInfo.Properties.TryGetValue(WORLD_ID_KEY, out var sessionProperty)) continue;
             if (sessionProperty.PropertyType != typeof(int)) continue;
             if ((WorldID)sessionProperty.PropertyValue != customSessionInfo.WorldID) continue;
+
+            if (!sessionInfo.Properties.TryGetValue(DISPLAY_SESSION_NAME_KEY, out var displaySessionName)) continue;
+            if (displaySessionName.PropertyType != typeof(string)) continue;
+            if ((string)displaySessionName.PropertyValue != customSessionInfo.DisplaySessionName) continue;
             
             targetSessionInfo = sessionInfo;
             break;
@@ -148,17 +153,17 @@ public class NetworkController : INetworkRunnerCallbacks
         await _networkRunnerController.StartSessionAsync(new StartGameArgs
         {
             GameMode = GameMode.Shared,
-            SessionName = customSessionInfo.SessionName,
+            SessionName = targetSessionInfo.Name,
             SessionProperties = new Dictionary<string, SessionProperty>
             {
                 {WORLD_ID_KEY, (int)customSessionInfo.WorldID },
+                {DISPLAY_SESSION_NAME_KEY, customSessionInfo.DisplaySessionName},
                 {PASSWORD_KEY, customSessionInfo.Password }
             }
         });
 
         _isLobbyScene = false;
         _currentWorldID = customSessionInfo.WorldID;
-
     }
 
     /// <summary>
