@@ -20,7 +20,6 @@ public class VideoView : MonoBehaviour
 
     [SerializeField] private Transform _playlistScrollViewContent;
 
-    // todo:時間が確定したタイミングでイベントを送る
     [SerializeField] private Slider _seekBarSlider;
     [SerializeField] private SliderDragNotifier _seekBarDragNotifier;
     [SerializeField] private TextMeshProUGUI _currentVideoTime;

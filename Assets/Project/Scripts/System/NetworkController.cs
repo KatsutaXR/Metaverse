@@ -100,7 +100,6 @@ public class NetworkController : INetworkRunnerCallbacks
         });
 
         await _sceneController.LoadWorldAsync(customSessionInfo.WorldID);
-        Debug.Log($"active = {SceneManager.GetActiveScene().name}");
 
         _isLobbyScene = false;
         _currentWorldID = customSessionInfo.WorldID;

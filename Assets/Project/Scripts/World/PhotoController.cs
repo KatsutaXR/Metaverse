@@ -31,8 +31,6 @@ public class PhotoController : NetworkBehaviour
 
         int targetTick = Runner.Tick + 5;
 
-
-        // todo:ポジションを設定する
         var photo = Runner.Spawn(_photoPrefab, position: transform.position + Vector3.down * 0.25f, rotation: transform.rotation);
         CheckPhotoCounts(photo.Id);
 

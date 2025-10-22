@@ -43,10 +43,10 @@ public class AvatarUIView : MonoBehaviour
 
     public void Initialize(AvatarData[] avatarDatas, GameObject avatarListItemPrefab)
     {
-        CreateWorldListItems(avatarDatas, avatarListItemPrefab);
+        CreateAvatarListItems(avatarDatas, avatarListItemPrefab);
     }
 
-    private void CreateWorldListItems(AvatarData[] avatarDatas, GameObject avatarListItemPrefab)
+    private void CreateAvatarListItems(AvatarData[] avatarDatas, GameObject avatarListItemPrefab)
     {
         // todo:現在のアバターをハイライトする
         foreach (var avatarData in avatarDatas)
