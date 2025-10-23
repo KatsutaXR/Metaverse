@@ -32,6 +32,7 @@ public abstract class WorldNetworkController : INetworkRunnerCallbacks, IDisposa
     protected ProfileStorage _profileStorage;
     protected PlayerXRUtility _playerXRUtility;
     protected GlobalNonNativeKeyboard _keyboard;
+    public bool IsInitializeCompleted = false;
 
     protected WorldNetworkController(NetworkRunnerController runnerController, RespawnAreaController respawnAreaController, PrefabDatabase prefabDatabase, WorldDatabase worldDatabase, AvatarDatabase avatarDatabase, WorldObjectFactory worldObjectFactory, ClientUIPresenter clientUIPresenter, ClientUIModel clientUIModel, WorldUIPresenter worldUIPresenter, ProfileUIPresenter profileUIPresenter, AvatarUIPresenter avatarUIPresenter, PlayerPresenter playerPresenter, VideoPresenter videoPresenter, VideoModel videoModel, ProfileStorage profileStorage, PlayerXRUtility playerXRUtility, GlobalNonNativeKeyboard keyboard)
     {

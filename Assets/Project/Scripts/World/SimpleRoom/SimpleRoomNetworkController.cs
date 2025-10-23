@@ -13,6 +13,7 @@ public class SimpleRoomNetworkController : WorldNetworkController
     public override void Initialize()
     {
         InitializeBase();
+        IsInitializeCompleted = true;
     }
 
     public override void Dispose()
