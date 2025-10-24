@@ -20,6 +20,8 @@ public class NetworkController : INetworkRunnerCallbacks
     private readonly SceneController _sceneController;
     private readonly Subject<Unit> _loadSceneCompleted = new Subject<Unit>();
     public IObservable<Unit> LoadSceneCompleted => _loadSceneCompleted;
+    private readonly Subject<string> _errorMessagePublished = new Subject<string>();
+    public IObservable<string> ErrorMessagePublished => _errorMessagePublished;
 
     private List<SessionInfo> _sessionList;
     private bool _isLobbyScene;
@@ -68,7 +70,7 @@ public class NetworkController : INetworkRunnerCallbacks
 
     public async UniTask CreateSessionAsync(CustomSessionInfo customSessionInfo)
     {
-        // セッション名とWorldIDが一致するものがあればエラーUIにその旨を表示して終了
+        // 表示セッション名とWorldIDが一致するものがあればエラーUIにその旨を表示して終了
         foreach (var sessionInfo in _sessionList)
         {
             if (!sessionInfo.Properties.TryGetValue(WORLD_ID_KEY, out var sessionProperty)) continue;
@@ -79,7 +81,8 @@ public class NetworkController : INetworkRunnerCallbacks
             if (displaySessionName.PropertyType != typeof(string)) continue;
             if ((string)displaySessionName.PropertyValue != customSessionInfo.DisplaySessionName) continue;
 
-            // todo:エラーを表示させる
+            // エラーを表示させる
+            _errorMessagePublished.OnNext("This session name already exists");
             return;
         }
 
@@ -107,7 +110,11 @@ public class NetworkController : INetworkRunnerCallbacks
 
     public async UniTask JoinSessionAsync(CustomSessionInfo customSessionInfo)
     {
-        if (_sessionList == null || _sessionList.Count == 0) return;
+        if (_sessionList == null || _sessionList.Count == 0)
+        {
+            _errorMessagePublished.OnNext("The session does not exist");
+            return;
+        }
 
         SessionInfo targetSessionInfo = null;
         foreach (var sessionInfo in _sessionList)
@@ -126,8 +133,8 @@ public class NetworkController : INetworkRunnerCallbacks
 
         if (targetSessionInfo == null)
         {
-            // todo:対象のセッションがないことをエラーUIに出して終了
-            Debug.LogError("TargetSession is null");
+            // 対象のセッションがないことをエラーUIに出して終了
+            _errorMessagePublished.OnNext("TargetSession is null");
             return;
         }
 
@@ -135,15 +142,15 @@ public class NetworkController : INetworkRunnerCallbacks
             password.PropertyType != typeof(string) ||
             (string)password.PropertyValue != customSessionInfo.Password)
         {
-            // todo:パスワードが違うとエラーUIに出して終了
-            Debug.LogError("Password is not correct");
+            // パスワードが違うとエラーUIに出して終了
+            _errorMessagePublished.OnNext("Password is not correct");
             return;
         }
 
         if (targetSessionInfo.PlayerCount >= targetSessionInfo.MaxPlayers)
         {
-            // todo:セッションが満員であることをエラーUIに出して終了
-            Debug.LogError("Session is full");
+            // セッションが満員であることをエラーUIに出して終了
+            _errorMessagePublished.OnNext("Session is full");
             return;
         }
 
@@ -173,7 +180,6 @@ public class NetworkController : INetworkRunnerCallbacks
     /// <returns></returns>
     public List<SessionInfo> FindTargetSessions(WorldID targetWorldID)
     {
-        Debug.Log($"FindTargetSessions, WorldID = {targetWorldID}");
         List<SessionInfo> targetSessionInfos = new List<SessionInfo>();
 
         if (_sessionList == null || _sessionList.Count == 0) return targetSessionInfos;

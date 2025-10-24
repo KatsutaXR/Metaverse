@@ -55,6 +55,12 @@ public class WorldUIPresenter : IDisposable
             .JoinSessionRequested
             .Subscribe(customSessionInfo => _networkController.JoinSessionAsync(_worldUIModel.PrepareJoinSessionInfo(customSessionInfo)).Forget())
             .AddTo(_disposable);
+
+        // エラー表示
+        _networkController
+            .ErrorMessagePublished
+            .Subscribe(message => _worldUIView.DisplayError(message))
+            .AddTo(_disposable);
     }
     
     public void Dispose()

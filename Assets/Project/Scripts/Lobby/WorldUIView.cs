@@ -43,6 +43,10 @@ public class WorldUIView : MonoBehaviour
     private readonly Subject<CustomSessionInfo> _joinSessionRequested = new Subject<CustomSessionInfo>();
     public IObservable<CustomSessionInfo> JoinSessionRequested => _joinSessionRequested;
 
+    [SerializeField] GameObject _error;
+    [SerializeField] TextMeshProUGUI _errorMessage;
+    [SerializeField] Button _errorOKButton;
+
     private WorldData[] _worldDatas;
     private List<GameObject> _sessionItems;
     private CompositeDisposable _disposable;
@@ -53,6 +57,7 @@ public class WorldUIView : MonoBehaviour
         _worldDetailBackButton.onClick.AddListener(BackToWorldList);
         _createSessionButton.onClick.AddListener(GoToCreateSessionSetting);
         _joinSessionButton.onClick.AddListener(GoToJoinSessionSetting);
+        _errorOKButton.onClick.AddListener(() => _error.SetActive(false));
     }
 
     private void OnEnable()
@@ -190,5 +195,11 @@ public class WorldUIView : MonoBehaviour
         _joinSessionButton.interactable = false;
 
         _updateSessionItemsRequested.OnNext(Unit.Default);
+    }
+
+    public void DisplayError(string message)
+    {
+        _error.SetActive(true);
+        _errorMessage.text = message;
     }
 }
