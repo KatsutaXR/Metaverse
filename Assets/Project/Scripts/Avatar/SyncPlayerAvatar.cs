@@ -28,7 +28,8 @@ public class SyncPlayerAvatar : NetworkBehaviour
     [SerializeField] private GameObject _avatarHand;
     [SerializeField] private Animator _animator;
     [SerializeField] private InputActionReference _moveActionRef;
-    [SerializeField] private InputActionReference _jumpActionRef; // todo:ジャンプを追加する
+    // todo:ジャンプを追加する
+    [SerializeField] private InputActionReference _jumpActionRef;
 
     [SerializeField] private Vector3 _fixLeftPosition;
     [SerializeField] private Quaternion _fixLeftRotation;

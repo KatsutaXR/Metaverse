@@ -8,7 +8,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class PlayerView : MonoBehaviour
 {
     [SerializeField] private InputActionReference _toggleClientUIAction;
-    [SerializeField] private InputActionReference _jumpAction; // todo:ジャンプを追加する
+    // todo:ジャンプを追加する
+    [SerializeField] private InputActionReference _jumpAction;
     [SerializeField] private InputActionReference _setMicActiveAction;
     [SerializeField] private GameObject _player;
     [SerializeField] private NearFarInteractor _rightNearFarInteractor;

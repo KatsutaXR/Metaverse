@@ -14,7 +14,8 @@ public class AvatarView : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     [SerializeField] private InputActionReference _moveActionRef;
-    [SerializeField] private InputActionReference _jumpActionRef; // todo:ジャンプを追加する
+    // todo:ジャンプを追加する
+    [SerializeField] private InputActionReference _jumpActionRef;
     [SerializeField] private Vector3 _fixLeftPosition;
     [SerializeField] private Quaternion _fixLeftRotation;
     [SerializeField] private Vector3 _fixRightPosition;
