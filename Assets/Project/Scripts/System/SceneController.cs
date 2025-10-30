@@ -1,9 +1,7 @@
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
-using Fusion;
 
 /// <summary>
 /// プロジェクト全体のシーンを制御するクラス

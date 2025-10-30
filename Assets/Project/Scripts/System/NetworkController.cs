@@ -5,7 +5,6 @@ using Fusion;
 using Fusion.Sockets;
 using UniRx;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using VContainer;
 
 /// <summary>

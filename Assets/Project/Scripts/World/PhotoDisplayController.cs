@@ -1,6 +1,5 @@
 using Fusion;
 using Fusion.Sockets;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhotoDisplayController : NetworkBehaviour

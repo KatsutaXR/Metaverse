@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -10,4 +11,5 @@ public class LightingData
     [Range(0f, 1f)] public float EnvironmentLightIntensity = 1f; // 明るさ倍率
     [Range(0f, 1f)] public float MainLightIntensity = 1f;
     public Vector3 MainLightRotation = Vector3.zero;
+    public LightingDataAsset LightingDataAsset;
 }

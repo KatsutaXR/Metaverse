@@ -1,11 +1,9 @@
-using Unity.XR.CoreUtils;
 using UnityEngine;
 using VContainer;
 
 public class ClientUIModel
 {
     private ClientUIModelUseCase _useCase;
-    private PlayerReferences _playerReferences;
     private Transform _leftHandTransform;
     [Inject]
     public ClientUIModel(ClientUIModelUseCase useCase)
@@ -15,7 +13,6 @@ public class ClientUIModel
 
     public void Initialize(PlayerReferences playerReferences)
     {
-        _playerReferences = playerReferences;
         _leftHandTransform = playerReferences.LeftHand;
     }
 

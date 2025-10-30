@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class CustomSessionInfo
 {
     public string DisplaySessionName { get; set; }

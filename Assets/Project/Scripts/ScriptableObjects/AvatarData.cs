@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AvatarData", menuName = "Scriptable Objects/AvatarData")]
 /// <summary>
 /// 各Avatarの情報を持つScriptableObject
-/// 要検討
 /// </summary>
 public class AvatarData : ScriptableObject
 {

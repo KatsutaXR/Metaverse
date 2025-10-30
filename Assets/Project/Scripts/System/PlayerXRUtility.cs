@@ -47,7 +47,7 @@ public class PlayerXRUtility
     }
 
     /// <summary>
-    /// シーンをまたぐとすぐにHMDのトラッキングが開始しないため開始を待ってからRecenterする
+    /// シーンを変更するとすぐにはHMDのトラッキングが開始しないため開始を待ってからRecenterする
     /// todo:HMDのトラッキング開始まで待つ処理に変える
     /// </summary>
     public async UniTask WaitTrackingStartAndRecenter(float waitTime = 0.1f)

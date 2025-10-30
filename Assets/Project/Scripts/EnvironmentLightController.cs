@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using UnityEditor;
 using UnityEngine;
 using VContainer;
 
@@ -54,6 +55,8 @@ public class EnvironmentLightController : NetworkBehaviour
             _mainLight.intensity = lightingData.MainLightIntensity;
             _mainLight.transform.rotation = Quaternion.Euler(lightingData.MainLightRotation);
         }
+
+        Lightmapping.lightingDataAsset = lightingData.LightingDataAsset;
 
         DynamicGI.UpdateEnvironment();
     }

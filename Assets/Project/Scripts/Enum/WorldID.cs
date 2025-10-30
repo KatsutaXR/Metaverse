@@ -5,4 +5,5 @@ public enum WorldID
     NightBeach = 2,
     SimpleRoom = 3,
     Rooftop = 4,
+    Theater = 5,
 }
