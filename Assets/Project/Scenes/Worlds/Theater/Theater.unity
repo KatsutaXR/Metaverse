@@ -2721,7 +2721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4488545809147979469, guid: 46cce80488620f2498d0ef696c2f0eae, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000023566732
+      value: 0.00012083746
       objectReference: {fileID: 0}
     - target: {fileID: 4849289044577364717, guid: 46cce80488620f2498d0ef696c2f0eae, type: 3}
       propertyPath: m_Pivot.x
@@ -3267,6 +3267,22 @@ PrefabInstance:
       propertyPath: _lightingDataList.Array.data[0].EnvironmentLightIntensity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3816600295758439835, guid: eda9b7e3acdc64d47bb98f0b6be4df58, type: 3}
+      propertyPath: _lightingDataList.Array.data[0].BakedLightingSet.lightmapDir.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816600295758439835, guid: eda9b7e3acdc64d47bb98f0b6be4df58, type: 3}
+      propertyPath: _lightingDataList.Array.data[0].BakedLightingSet.lightmapColor.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816600295758439835, guid: eda9b7e3acdc64d47bb98f0b6be4df58, type: 3}
+      propertyPath: '_lightingDataList.Array.data[0].BakedLightingSet.lightmapDir.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2800000, guid: 6f27574c3754e524b9e9c77d1da638c1, type: 3}
+    - target: {fileID: 3816600295758439835, guid: eda9b7e3acdc64d47bb98f0b6be4df58, type: 3}
+      propertyPath: '_lightingDataList.Array.data[0].BakedLightingSet.lightmapColor.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2800000, guid: 3973c4f864ee7de4b9471be2830a9643, type: 3}
     - target: {fileID: 4062185287571885021, guid: eda9b7e3acdc64d47bb98f0b6be4df58, type: 3}
       propertyPath: m_Name
       value: ChangeLightButton

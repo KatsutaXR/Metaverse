@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using UnityEditor;
 using UnityEngine;
 using VContainer;
 
@@ -56,9 +55,37 @@ public class EnvironmentLightController : NetworkBehaviour
             _mainLight.transform.rotation = Quaternion.Euler(lightingData.MainLightRotation);
         }
 
-        Lightmapping.lightingDataAsset = lightingData.LightingDataAsset;
-
+        // Lightmapping.lightingDataAsset = lightingData.LightingDataAsset;
+        if (lightingData.BakedLightingSet != null)
+        {
+            ApplyBakedLight(lightingData.BakedLightingSet);
+        }
+        else
+        {
+            LightmapSettings.lightmaps = new LightmapData[0];
+        }
+        
         DynamicGI.UpdateEnvironment();
+    }
+
+    private void ApplyBakedLight(BakedLightingSet lightingSet)
+    {
+        int count = lightingSet.lightmapColor.Length;
+        LightmapData[] newLightmaps = new LightmapData[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            var data = new LightmapData();
+            data.lightmapColor = lightingSet.lightmapColor[i];
+            if (lightingSet.lightmapDir != null && i < lightingSet.lightmapDir.Length)
+                data.lightmapDir = lightingSet.lightmapDir[i];
+
+            newLightmaps[i] = data;
+        }
+
+        LightmapSettings.lightmaps = newLightmaps;
+
+        Debug.Log($"Switched to lighting set: {lightingSet.lightmapColor.Length} lightmaps");
     }
     
 }

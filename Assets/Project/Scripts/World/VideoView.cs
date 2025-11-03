@@ -61,6 +61,7 @@ public class VideoView : MonoBehaviour
 
     private void Start()
     {
+        _frontUI.SetActive(false);
         _volumeSlider.value = _audioSource.volume;
 
         _displayButton.onClick.AddListener(() => _frontUI.SetActive(true));
