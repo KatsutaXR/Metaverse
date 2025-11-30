@@ -2,7 +2,11 @@
 VR対応のメタバース。  
 VRChatによくあるカメラやペン、動画プレイヤーやアバター機能などを実装しました。  
 また、基本的に各機能は同期するように実装しています。  
-現状はMetaQuestでのみ動作確認済みです。  
+プラットフォームはPCで、現状はMetaQuest3でのみ動作確認済みです。  
+
+githubから落とした場合の初期設定を書く！！！！
+GitHubからプロジェクトを
+1. 
 <img width="2294" height="1202" alt="スクリーンショット 2025-11-30 035758" src="https://github.com/user-attachments/assets/610f6051-818e-4885-8d47-0b5df1c8b5d2" />
 <img width="1869" height="1176" alt="スクリーンショット 2025-11-30 040458" src="https://github.com/user-attachments/assets/899f750b-7ec3-41ae-a587-2b817c78cb3c" />
 
