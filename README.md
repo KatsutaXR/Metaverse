@@ -3,10 +3,6 @@ VR対応のメタバース。
 VRChatによくあるカメラやペン、動画プレイヤーやアバター機能などを実装しました。  
 また、基本的に各機能は同期するように実装しています。  
 プラットフォームはPCで、現状はMetaQuest3でのみ動作確認済みです。  
-
-githubから落とした場合の初期設定を書く！！！！
-GitHubからプロジェクトを
-1. 
 <img width="2294" height="1202" alt="スクリーンショット 2025-11-30 035758" src="https://github.com/user-attachments/assets/610f6051-818e-4885-8d47-0b5df1c8b5d2" />
 <img width="1869" height="1176" alt="スクリーンショット 2025-11-30 040458" src="https://github.com/user-attachments/assets/899f750b-7ec3-41ae-a587-2b817c78cb3c" />
 
@@ -33,6 +29,14 @@ GitHubからプロジェクトを
 - アバター変更
 - プロフィール設定と閲覧
 - HMDの基準地点リセット(位置、回転角度)
+
+## 実行手順
+1. Metaverse\Assets\StreamingAssetsの下に"Videos"フォルダを作成します。
+2. Videosフォルダ内にmp4形式の動画ファイルを置きます。  
+   ※セッション内で同じ動画ファイルがフォルダ内に用意されてないとエラーが出てしまいます。  
+   　プロジェクト内の動画ファイル：https://drive.google.com/drive/folders/1iKTAQgXblcEaPYTMX2q9UUlnQhcIZqzC?usp=drive_link
+3. SystemSceneを開き、実行することでゲームをプレイできます。
+
 
 ## 動画URL
 Youtube：https://www.youtube.com/watch?v=_TzMFZm4uiM
